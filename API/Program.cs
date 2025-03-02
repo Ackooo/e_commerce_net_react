@@ -16,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 //treba dodati kontrolere
-//tj dependency inj
+
 
 //service container
 //order does not matter
