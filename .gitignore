@@ -1,0 +1,6 @@
+
+/.vs
+/API/bin
+/API/obj
+/API/appsettings.Development.json
+/API/store.db
