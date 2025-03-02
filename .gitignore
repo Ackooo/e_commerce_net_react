@@ -4,3 +4,5 @@
 /API/obj
 /API/appsettings.Development.json
 /API/store.db
+/API.csproj.SdkResolver.1981936763.proj
+/Report.upgradeToNet9.json
