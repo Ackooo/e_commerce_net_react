@@ -8,9 +8,11 @@ using API.Extensions;
 using API.RequestHelpers;
 using API.Services;
 using AutoMapper;
+using Localization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace API.Controllers
 {
@@ -21,16 +23,18 @@ namespace API.Controllers
         private readonly StoreContext _context;
         private readonly IMapper _mapper;
         private readonly ImageService _imageService;
+        private readonly IStringLocalizer<Resource> _localizer;
 
         #endregion
 
         #region Ctors
 
-        public ProductsController(StoreContext context, IMapper mapper, ImageService imageService)
+        public ProductsController(StoreContext context, IMapper mapper, ImageService imageService, IStringLocalizer<Resource> localizer)
         {
             _context = context;
             _mapper = mapper;
             _imageService = imageService;
+            _localizer = localizer;
         }
 
         #endregion
@@ -94,7 +98,7 @@ namespace API.Controllers
             var result = await _context.SaveChangesAsync() > 0;
             if (result) return CreatedAtRoute("GetProduct", new { Id = product.Id }, product);
 
-            return BadRequest(new ProblemDetails { Title = "Problem creating new product" });
+            return BadRequest(new ProblemDetails { Title = _localizer["Product_ProblemCreate"] });
         }
 
         [Authorize(Roles = "Admin")]
@@ -121,7 +125,7 @@ namespace API.Controllers
             var result = await _context.SaveChangesAsync() > 0;
             if (result) return Ok(product);
 
-            return BadRequest(new ProblemDetails { Title = "Problem updating product" });
+            return BadRequest(new ProblemDetails { Title = _localizer["Product_ProblemUpdate"] });
 
         }
 
@@ -143,7 +147,7 @@ namespace API.Controllers
             var result = await _context.SaveChangesAsync() > 0;
             
             if(result) return Ok();
-            return BadRequest(new ProblemDetails { Title = "Problem deleting product" });
+            return BadRequest(new ProblemDetails { Title = _localizer["Product_ProblemDelete"] });
         }
 
         #endregion

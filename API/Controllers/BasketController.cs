@@ -3,18 +3,22 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace API.Controllers
 {
     public class BasketController : BaseApiController
     {
         private readonly StoreContext _context;
+        private readonly IStringLocalizer<Resource> _localizer;
 
-        public BasketController(StoreContext context)
+        public BasketController(StoreContext context, IStringLocalizer<Resource> localizer)
         {
             _context = context;
+            _localizer = localizer;
         }
 
         [HttpGet(Name = "GetBasket")]
@@ -36,12 +40,12 @@ namespace API.Controllers
             var product = await _context.Products.FindAsync(productId);
             //handled in client
             //if (product == null) return NotFound();
-            if (product == null) return BadRequest(new ProblemDetails{Title = "Product Not Found"});
+            if (product == null) return BadRequest(new ProblemDetails{Title = _localizer["Product_NotFound"] });
             basket.AddItem(product, quantity);
 
             var result = await _context.SaveChangesAsync() > 0;
             if (result) return CreatedAtRoute("GetBasket", basket.MapBasketToDto());
-            return BadRequest(new ProblemDetails { Title = "Problem saving item to basket" });
+            return BadRequest(new ProblemDetails { Title = _localizer["Basket_ProblemSave"] });
         }
 
         [HttpDelete]
@@ -57,7 +61,7 @@ namespace API.Controllers
 
             if (result) return Ok();
 
-            return BadRequest(new ProblemDetails { Title = "Problem removing item from the basket" });
+            return BadRequest(new ProblemDetails { Title = _localizer["Basket_ProblemRemove"] });
         }
 
         private async Task<Basket> RetrieveBasket(string buyerId)

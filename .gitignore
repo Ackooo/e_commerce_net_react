@@ -6,3 +6,9 @@
 /API/store.db
 /API.csproj.SdkResolver.1981936763.proj
 /Report.upgradeToNet9.json
+
+/Localization/bin
+/Localization/obj
+
+/Test/bin
+/Test/obj

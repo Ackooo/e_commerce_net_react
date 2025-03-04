@@ -3,9 +3,11 @@ using API.DTOs;
 using API.Entities;
 using API.Entities.OrderAggregate;
 using API.Extensions;
+using Localization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace API.Controllers
 {
@@ -16,10 +18,12 @@ namespace API.Controllers
     public class OrdersController : BaseApiController
     {
         private readonly StoreContext _context;
+        private readonly IStringLocalizer<Resource> _localizer;
 
-        public OrdersController(StoreContext context)
+        public OrdersController(StoreContext context, IStringLocalizer<Resource> localizer)
         {
             _context = context;
+            _localizer = localizer;
         }
 
         [HttpGet]
@@ -52,7 +56,7 @@ namespace API.Controllers
                 .RetrieveBasketWithItems(User.Identity.Name)
                 .FirstOrDefaultAsync();
 
-            if (basket == null) return BadRequest(new ProblemDetails { Title = "Could not locate basket" });
+            if (basket == null) return BadRequest(new ProblemDetails { Title = _localizer["Basket_ProblemLocate"]});
 
             var items = new List<OrderItem>();
 
@@ -117,7 +121,7 @@ namespace API.Controllers
 
             if (result) return CreatedAtRoute("GetOrder", new { id = order.Id }, order.Id);
 
-            return BadRequest("Problem creating order");
+            return BadRequest(_localizer["Order_ProblemCreate"]);
 
         }
 

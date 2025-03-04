@@ -3,9 +3,11 @@ using API.DTOs;
 using API.Entities.OrderAggregate;
 using API.Extensions;
 using API.Services;
+using Localization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using Stripe;
 
 namespace API.Controllers;
@@ -15,12 +17,14 @@ public class PaymentsController : BaseApiController
     private readonly PaymentService _paymentService;
     private readonly StoreContext _context;
     private readonly IConfiguration _config;
+    private readonly IStringLocalizer<Resource> _localizer;
 
-    public PaymentsController(PaymentService paymentService, StoreContext context, IConfiguration config)
+    public PaymentsController(PaymentService paymentService, StoreContext context, IConfiguration config, IStringLocalizer<Resource> localizer)
     {
         _paymentService = paymentService;
         _context = context;
         _config = config;
+        _localizer = localizer;
     }
 
     [Authorize]

@@ -4,6 +4,7 @@ using API.Entities;
 using API.Middleware;
 using API.RequestHelpers;
 using API.Services;
+using Localization.Config;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -86,6 +87,15 @@ builder.Services.AddScoped<PaymentService>();
 builder.Services.AddScoped<ImageService>();
 
 
+
+
+builder.Services.AddLocalizationServices(builder.Configuration);
+
+
+
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -118,6 +128,16 @@ app.UseAuthorization();
 
 
 app.MapControllers();
+
+string[] supportedCultures = ["en-US", "sr"];
+
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+app.UseRequestLocalization(localizationOptions);
+
+
 
 
 var scope = app.Services.CreateScope();
