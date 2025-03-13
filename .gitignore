@@ -1,14 +1,30 @@
 
 /.vs
-/API/bin
-/API/obj
-/API/appsettings.Development.json
-/API/store.db
-/API.csproj.SdkResolver.1981936763.proj
+/API/.vs
+
+/API/API/bin
+/API/API/obj
+/API/API/appsettings.Development.json
+/API/API/store.db
+/API/API.csproj.SdkResolver.1981936763.proj
 /Report.upgradeToNet9.json
 
-/Localization/bin
-/Localization/obj
+/API/Application/bin
+/API/Application/obj
 
-/Test/bin
-/Test/obj
+/API/Db/bin
+/API/Db/obj
+
+/API/Domain/bin
+/API/Domain/obj
+
+/API/Infrastructure/bin
+/API/Infrastructure/obj
+
+/API/Localization/bin
+/API/Localization/obj
+
+/API/Test/bin
+/API/Test/obj
+
+/API/.editorconfig
