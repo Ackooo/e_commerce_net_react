@@ -16,10 +16,11 @@ public static class PersistenceConfiguration
     public static void AddContextConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<StoreContext>(opt =>
+        opt.UseSqlServer(configuration.GetValue<string>(nameof(StoreContext)), x =>
         {
-            //opt.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
-
-        });
+            x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+        })//.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+        );
     }
 
     public static async Task InitializeDatabaseAsync(this WebApplication app)

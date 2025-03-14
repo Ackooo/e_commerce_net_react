@@ -10,6 +10,8 @@
     <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="7.3.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="7.3.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="7.3.1" />
@@ -19,6 +21,7 @@
     <ProjectReference Include="..\Db\Db.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\Localization\Localization.csproj" />
   </ItemGroup>
 
 </Project>

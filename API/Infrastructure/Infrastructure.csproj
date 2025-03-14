@@ -14,7 +14,6 @@
     <Folder Include="Security\" />
     <Folder Include="Persistence\EntitiesConfig\" />
     <Folder Include="Persistence\Interfaces\" />
-    <Folder Include="Persistence\Repositories\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +21,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.3" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.0.1" />
     <PackageReference Include="Stripe.net" Version="47.4.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.1" />
@@ -29,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Localization\Localization.csproj" />
   </ItemGroup>
 
 </Project>
