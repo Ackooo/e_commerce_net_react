@@ -22,6 +22,7 @@ public class ProductsController(IProductService productService, ImageService ima
     #region GET
 
     [HttpGet]
+    [ProducesResponseType(typeof(PagedList<Product>), 200)]
     public async Task<ActionResult<PagedList<Product>>> GetProducts([FromQuery] ProductParams productParams)
     {
         var products = await productService.GetProductsFromQueryAsync(productParams);
@@ -31,6 +32,7 @@ public class ProductsController(IProductService productService, ImageService ima
     }
 
     [HttpGet("{id}", Name = "GetProduct")]
+    [ProducesResponseType(typeof(Product), 200)]
     public async Task<ActionResult<Product>> GetProduct(int id)
 	{
         var product = await productService.GetProductAsync(id);
@@ -38,6 +40,7 @@ public class ProductsController(IProductService productService, ImageService ima
     }
 
     [HttpGet("filters")]
+    [ProducesResponseType(typeof(ProductFiltersDto), 200)]
     public async Task<IActionResult> GetFilters()
     {
         var filters = await productService.GetProductFiltersAsync();
@@ -73,6 +76,7 @@ public class ProductsController(IProductService productService, ImageService ima
 
     [Authorize(Roles = "Admin")]
     [HttpPut]
+    [ProducesResponseType(typeof(Product), 200)]
     public async Task<ActionResult<Product>> UpdateProduct([FromForm] UpdateProductDto productDto)
     {
         var product = await productService.GetProductAsync(productDto.Id);

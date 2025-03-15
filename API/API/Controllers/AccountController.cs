@@ -15,6 +15,7 @@ public class AccountController(UserManager<User> userManager,
     ITokenService tokenService, IBasketService basketService) : BaseController
 {
     [HttpPost("login")]
+    [ProducesResponseType(typeof(UserDto), 200)]
     public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
     {
         var user = await userManager.FindByNameAsync(loginDto.Username);
@@ -69,6 +70,7 @@ public class AccountController(UserManager<User> userManager,
 
     [Authorize]
     [HttpGet("currentUser")]
+    [ProducesResponseType(typeof(UserDto), 200)]
     public async Task<ActionResult<UserDto>> GetCurrentUser()
     {
         var user = await userManager.FindByNameAsync(User.Identity.Name);
@@ -84,6 +86,7 @@ public class AccountController(UserManager<User> userManager,
 
     [Authorize]
     [HttpGet("savedAddress")]
+    [ProducesResponseType(typeof(UserAddess), 200)]
     public async Task<ActionResult<UserAddess>> GetSavedAddress()
     {
         return await userManager.Users

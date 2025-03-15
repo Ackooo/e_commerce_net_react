@@ -16,6 +16,7 @@ public class BasketController(IBasketService basketService, IProductService prod
     #region GET
 
     [HttpGet(Name = "GetBasket")]
+    [ProducesResponseType(typeof(BasketDto), 200)]
     public async Task<ActionResult<BasketDto>> GetBasket()
     {
         var buyerId = GetBuyerId();
@@ -32,6 +33,7 @@ public class BasketController(IBasketService basketService, IProductService prod
     #region POST
 
     [HttpPost]
+    [ProducesResponseType(typeof(BasketDto), 200)]
     public async Task<ActionResult<BasketDto>> AddItemToBasket(int productId, int quantity)
     {
         var buyerId = GetBuyerId();

@@ -15,11 +15,13 @@ public class OrdersController(IOrderService orderService, IStringLocalizer<Resou
     #region GET
 
     [HttpGet]
+    [ProducesResponseType(typeof(List<OrderDto>), 200)]
     public async Task<ActionResult<List<OrderDto>>> GetOrders()
     {
 		return await orderService.GetByBuyerIdAsync(User.Identity.Name);
     }
 
+    [ProducesResponseType(typeof(OrderDto), 200)]
     [HttpGet("{id}", Name = "GetOrder")]
     public async Task<ActionResult<OrderDto>> GetOrder(int id)
     {
