@@ -2,19 +2,18 @@
 
 using Domain.Entities.User;
 using Domain.Interfaces.Services;
+using Domain.Shared.Configurations;
 
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-public class TokenService(UserManager<User> userManager, IConfiguration config) : ITokenService
+public class TokenService(UserManager<User> userManager, IOptionsMonitor<JwtSettings> jwtSettings) : ITokenService
 {
-    private readonly UserManager<User> _userManager = userManager;
-    private readonly IConfiguration _config = config;
 
     public async Task<string> GenerateToken(User user)
     {
@@ -25,13 +24,13 @@ public class TokenService(UserManager<User> userManager, IConfiguration config) 
 
         };
 
-        var roles = await _userManager.GetRolesAsync(user);
+        var roles = await userManager.GetRolesAsync(user);
         foreach (var role in roles)
         {
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWTSettings:TokenKey"]));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.CurrentValue.TokenKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
 
         var tokenOptions = new JwtSecurityToken(issuer: null, audience: null, claims: claims,

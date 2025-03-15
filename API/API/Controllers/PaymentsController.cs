@@ -13,9 +13,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
 using Stripe;
+using Microsoft.Extensions.Options;
+using Domain.Shared.Configurations;
 
 public class PaymentsController(PaymentService paymentService, IBasketService basketService, IOrderService orderService,
-    IConfiguration config, IStringLocalizer<Resource> localizer) : BaseController
+    IOptionsMonitor<StripeSettings> stripeSettings, IStringLocalizer<Resource> localizer) : BaseController
 {
 
     [Authorize]
@@ -44,7 +46,7 @@ public class PaymentsController(PaymentService paymentService, IBasketService ba
     {
         var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
         var stripeEvent = EventUtility.ConstructEvent(json, Request.Headers["Stripe-Signature"],
-            config["StripeSettings:WhSecret"]);
+            stripeSettings.CurrentValue.WhSecret);
 
         var charge = (Charge)stripeEvent.Data.Object;
 

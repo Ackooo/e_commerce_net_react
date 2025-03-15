@@ -4,24 +4,25 @@ using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 
 using Domain.Interfaces.Services;
+using Domain.Shared.Configurations;
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 public class ImageService : IImageService
 {
     private readonly Cloudinary _cloudinary;
 
-    public ImageService(IConfiguration config)
-    {
-        var acc = new Account(
-            config["Cloudinary:CloudName"],
-            config["Cloudinary:ApiKey"],
-            config["Cloudinary:ApiSecret"]
-        );
+	public ImageService(IOptionsMonitor<CloudinarySettings> cloudinarySettings)
+	{
+		var acc = new Account(
+			cloudinarySettings.CurrentValue.CloudName,
+			cloudinarySettings.CurrentValue.ApiKey,
+			cloudinarySettings.CurrentValue.ApiSecret
+		);
 
-        _cloudinary = new Cloudinary(acc);
-    }
+		_cloudinary = new Cloudinary(acc);
+	}
 
     public async Task<ImageUploadResult> AddImageAsync(IFormFile file)
     {

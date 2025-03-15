@@ -2,18 +2,18 @@
 
 using Domain.Entities.Basket;
 using Domain.Interfaces.Services;
+using Domain.Shared.Configurations;
 
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 using Stripe;
 
-public class PaymentService(IConfiguration config) : IPaymentService
+public class PaymentService(IOptionsMonitor<StripeSettings> stripeSettings) : IPaymentService
 {
-    private readonly IConfiguration _config = config;
 
     public async Task<PaymentIntent> CreateOrUpdatePaymentIntent(Basket basket)
     {
-        StripeConfiguration.ApiKey = _config["StripeSettings:SecretKey"];
+        StripeConfiguration.ApiKey = stripeSettings.CurrentValue.SecretKey;
 
         var service = new PaymentIntentService();
         var intent = new PaymentIntent();

@@ -11,6 +11,10 @@ using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var configuration = SettingsConfiguration.AddConfiguration(args);
+
+builder.Services.AddAppConfiguration(configuration);
+
 builder.Services.AddControllers();
 
 builder.Services.AddMappingConfiguration();
@@ -19,13 +23,13 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerConfiguration();
 
-builder.Services.AddContextConfiguration(builder.Configuration);
+builder.Services.AddContextConfiguration(configuration);
 
 builder.Services.AddCors();
 
 builder.Services.AddIdentityConfiguration();
 
-builder.Services.AddAuthenticationConfiguration(builder.Configuration);
+builder.Services.AddAuthenticationConfiguration(configuration);
 
 builder.Services.AddDependencyConfiguration();
 
