@@ -1,8 +1,18 @@
 ﻿namespace Domain.Entities.Order;
+
+using System.ComponentModel.DataAnnotations.Schema;
+
+
+[Table(nameof(OrderItem), Schema = "Store")]
 public class OrderItem
 {
-    public int Id { get; set; }
-    public ProductItemOrdered ItemOrdered { get; set; }
+    public Guid Id { get; set; } = Guid.CreateVersion7();
+    public long CIId { get; set; }
+
     public long Price { get; set; }
     public int Quantity { get; set; }
+    
+    public Guid ProductId { get; set; }
+    public string Name { get; set; }
+    public string? PictureUrl { get; set; }
 }

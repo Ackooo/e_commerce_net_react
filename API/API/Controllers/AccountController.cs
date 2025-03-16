@@ -86,8 +86,8 @@ public class AccountController(UserManager<User> userManager,
 
     [Authorize]
     [HttpGet("savedAddress")]
-    [ProducesResponseType(typeof(UserAddess), 200)]
-    public async Task<ActionResult<UserAddess>> GetSavedAddress()
+    [ProducesResponseType(typeof(Address), 200)]
+    public async Task<ActionResult<Address>> GetSavedAddress()
     {
         return await userManager.Users
             .Where(x => x.UserName == User.Identity.Name)

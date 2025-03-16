@@ -13,7 +13,7 @@ using AutoMapper;
 public class OrderService(IOrderRepository orderRepository, IBasketRepository basketRepository, 
 	IUserRepository userRepository, IMapper mapper, IStringLocalizer<Resource> localizer) : IOrderService
 {
-	public async Task<OrderDto> GetByIdAsync(int id, string buyerId)
+	public async Task<OrderDto> GetByIdAsync(Guid id, string buyerId)
 	{
 		var order = await orderRepository.GetByIdAsync(id, buyerId);
 		//return order.ProjectOrderToOrderDto();
@@ -27,7 +27,7 @@ public class OrderService(IOrderRepository orderRepository, IBasketRepository ba
 		return mapper.Map<List<OrderDto>>(orders);
 	}
 
-	public async Task<int> CreateOrder(string buyerId, CreateOrderDto orderDto)
+	public async Task<Guid> CreateOrder(string buyerId, CreateOrderDto orderDto)
 	{
 		var basket = await basketRepository.GetBasketAsync(buyerId)
 			?? throw new ApiException(localizer["Basket_ProblemLocate"]);
@@ -38,18 +38,14 @@ public class OrderService(IOrderRepository orderRepository, IBasketRepository ba
 		{
 			var productItem = item.Product;
 			//var productItem = await context.Products.FindAsync(item.ProductId);
-			var itemOrdered = new ProductItemOrdered
-			{
-				ProductId = productItem.Id,
-				Name = productItem.Name,
-				PictureUrl = productItem.PictureUrl,
-			};
 
 			var orderItem = new OrderItem
 			{
-				ItemOrdered = itemOrdered,
 				Price = productItem.Price,
-				Quantity = item.Quantity
+				Quantity = item.Quantity,
+				ProductId = productItem.Id,
+				Name = productItem.Name,
+				PictureUrl = productItem.PictureUrl,
 			};
 			items.Add(orderItem);
 			productItem.QuantityInStock -= item.Quantity;

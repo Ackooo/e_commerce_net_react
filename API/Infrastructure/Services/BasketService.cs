@@ -28,12 +28,12 @@ public class BasketService(IBasketRepository basketRepository) : IBasketService
 		return await basketRepository.AddItemAsync(basket, product, quantity);
 	}
 
-	public async Task<bool> DeleteBasketAsync(int id)
+	public async Task<bool> DeleteBasketAsync(Guid id)
 	{
 		return await basketRepository.DeleteBasketAsync(id);
 	}
 
-	public async Task<bool> RemoveItemAsync(Basket basket, int productId, int quantity)
+	public async Task<bool> RemoveItemAsync(Basket basket, Guid productId, int quantity)
 	{
 		return await basketRepository.RemoveItemAsync(basket, productId, quantity);
 	}

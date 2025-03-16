@@ -6,7 +6,7 @@ using Domain.RequestHelpers;
 
 public interface IProductService
 {
-    Task<Product?> GetProductAsync(int id);
+    Task<Product?> GetProductAsync(Guid id);
 
     Task<PagedList<Product>> GetProductsFromQueryAsync(ProductParams productParams);
 
@@ -16,5 +16,5 @@ public interface IProductService
 
     Task<bool> UpdateProductAsync(Product product);
 
-    Task<bool> DeleteProductAsync(int id);
+    Task<bool> DeleteProductAsync(Guid id);
 }

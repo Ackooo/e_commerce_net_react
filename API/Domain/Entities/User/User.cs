@@ -1,9 +1,11 @@
 ﻿namespace Domain.Entities.User;
 
+using System.ComponentModel.DataAnnotations.Schema;
+
 using Microsoft.AspNetCore.Identity;
 
-public class User : IdentityUser<int>
-{
-    public UserAddess Address { get; set; }
+[Table("AspNetUsers", Schema = "User")]
+public class User : IdentityUser<Guid>
+{    
+    public Address? Address { get; set; }
 }
-

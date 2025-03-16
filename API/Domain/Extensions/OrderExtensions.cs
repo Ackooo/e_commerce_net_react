@@ -20,9 +20,9 @@ public static class OrderExtensions
                 Total = order.GetTotal(),
                 OrderItems = order.OrderItems.Select(item => new OrderItemDto
                 {
-                    ProductId = item.ItemOrdered.ProductId,
-                    Name = item.ItemOrdered.Name,
-                    PictureUrl = item.ItemOrdered.PictureUrl,
+                    ProductId = item.ProductId,
+                    Name = item.Name,
+                    PictureUrl = item.PictureUrl,
                     Price = item.Price,
                     Quantity = item.Quantity
                 }).ToList()

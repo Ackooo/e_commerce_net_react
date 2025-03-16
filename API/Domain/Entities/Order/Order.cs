@@ -1,22 +1,27 @@
 ﻿namespace Domain.Entities.Order;
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 using Domain.Shared.Enums;
 
+[Table(nameof(Order), Schema = "Store")]
 public class Order
 {
-    public int Id { get; set; }
-    public required string BuyerId { get; set; }
-    [Required]
-    public ShippingAddress ShippingAddress { get; set; }
+    public Guid Id { get; set; } = Guid.CreateVersion7();
+    public long CIId { get; set; }
+
     public DateTime OrderDate { get; set; } = DateTime.Now; // UtcNow for some sql
-    public required List<OrderItem> OrderItems { get; set; }
     public long Subtotal { get; set; }
     public long DeliveryFee { get; set; }
     public OrderStatus OrderStatus { get; set; } = OrderStatus.Pending;
+    [Required]
+    public ShippingAddress ShippingAddress { get; set; }
 
-    public required string PaymentIntentId { get; set; }
+    public required string BuyerId { get; set; }
+    public required List<OrderItem> OrderItems { get; set; }
+
+    public string? PaymentIntentId { get; set; }
 
     public long GetTotal()
     {

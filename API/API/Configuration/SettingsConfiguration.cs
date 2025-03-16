@@ -10,8 +10,8 @@ public static class SettingsConfiguration
     {
         var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
         var configurationBuilder = new ConfigurationBuilder()
-            .SetBasePath($"{Directory.GetCurrentDirectory()}/Config")
-            .AddJsonFile("logger.json", true, true);
+            .SetBasePath($"{Directory.GetCurrentDirectory()}/Properties")            
+            .AddJsonFile($"appsettings.{environment}.json", false, true);            
         
         var isDevelopment = environment == Environments.Development;
         if (isDevelopment)

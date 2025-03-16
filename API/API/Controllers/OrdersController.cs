@@ -23,7 +23,7 @@ public class OrdersController(IOrderService orderService, IStringLocalizer<Resou
 
     [ProducesResponseType(typeof(OrderDto), 200)]
     [HttpGet("{id}", Name = "GetOrder")]
-    public async Task<ActionResult<OrderDto>> GetOrder(int id)
+    public async Task<ActionResult<OrderDto>> GetOrder(Guid id)
     {
         return await orderService.GetByIdAsync(id, User.Identity.Name);
     }
@@ -33,12 +33,12 @@ public class OrdersController(IOrderService orderService, IStringLocalizer<Resou
     #region POST
 
     [HttpPost]
-    public async Task<ActionResult<int>> CreateOrder(CreateOrderDto orderDto)
+    public async Task<ActionResult<Guid>> CreateOrder(CreateOrderDto orderDto)
     {
         try
         {
             var result = await orderService.CreateOrder(User.Identity.Name, orderDto);
-            if (result != 0) 
+            if (result != Guid.Empty) 
                 return CreatedAtRoute("GetOrder", new { id = result }, result);
 			return BadRequest(localizer["Order_ProblemCreate"]);
         }

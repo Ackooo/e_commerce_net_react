@@ -1,0 +1,6 @@
+StripeSettings:
+    PublishableKey: dashboard.stripe.com/test/
+    SecretKey: dashboard.stripe.com/test/
+    WhSecret: cmd - stripe listen
+CloudinarySettings:
+    console.cloudinary.com/settings/

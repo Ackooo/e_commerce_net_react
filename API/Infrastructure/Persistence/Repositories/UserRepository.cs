@@ -14,7 +14,7 @@ public class UserRepository(StoreContext storeContext) : IUserRepository
 				.Include(u => u.Address)
 				.FirstOrDefaultAsync(x => x.UserName == buyerId);
 
-		var address = new UserAddess
+		var address = new Address
 		{
 			FullName = orderDto.ShippingAddress.FullName,
 			Address1 = orderDto.ShippingAddress.Address1,

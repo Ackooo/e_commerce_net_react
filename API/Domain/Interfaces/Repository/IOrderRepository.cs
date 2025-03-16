@@ -4,7 +4,7 @@ using Domain.Entities.Order;
 
 public interface IOrderRepository
 {
-    Task<Order> GetByIdAsync(int id, string buyerId);
+    Task<Order> GetByIdAsync(Guid id, string buyerId);
 
     Task<List<Order>> GetByBuyerIdAsync(string buyerId);
 

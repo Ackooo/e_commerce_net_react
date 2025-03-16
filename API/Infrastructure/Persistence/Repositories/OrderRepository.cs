@@ -10,7 +10,7 @@ using Stripe;
 
 public class OrderRepository(StoreContext storeContext) : IOrderRepository
 {
-	public Task<Order> GetByIdAsync(int id, string buyerId)
+	public Task<Order> GetByIdAsync(Guid id, string buyerId)
 	{
 		return storeContext.Orders.AsNoTracking()
 			.Include(o => o.OrderItems)

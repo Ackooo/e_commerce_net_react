@@ -4,7 +4,7 @@
 
 /API/API/bin
 /API/API/obj
-/API/API/appsettings.Development.json
+/API/API/Properties/appsettings.Development.json
 /API/API/store.db
 /API/API.csproj.SdkResolver.1981936763.proj
 /Report.upgradeToNet9.json
@@ -12,8 +12,11 @@
 /API/Application/bin
 /API/Application/obj
 
-/API/Db/bin
-/API/Db/obj
+/API/Db
+
+/API/DbUp/bin
+/API/DbUp/obj
+/API/DbUp/Config/appsettings.Development.json
 
 /API/Domain/bin
 /API/Domain/obj

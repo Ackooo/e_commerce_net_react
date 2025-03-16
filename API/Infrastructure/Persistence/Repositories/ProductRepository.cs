@@ -11,7 +11,7 @@ using Domain.Entities.Basket;
 public class ProductRepository(StoreContext storeContext) : IProductRepository
 {
 
-	public async Task<Product?> GetProductAsync(int id)
+	public async Task<Product?> GetProductAsync(Guid id)
 	{
 		return await storeContext.Products.FindAsync(id);
 	}
@@ -46,7 +46,7 @@ public class ProductRepository(StoreContext storeContext) : IProductRepository
 		return await storeContext.SaveChangesAsync() != 0;
 	}
 
-	public async Task<bool> DeleteProductAsync(int id)
+	public async Task<bool> DeleteProductAsync(Guid id)
 	{
 		return await storeContext.Products.Where(p => p.Id == id).ExecuteDeleteAsync() != 0;
 	}

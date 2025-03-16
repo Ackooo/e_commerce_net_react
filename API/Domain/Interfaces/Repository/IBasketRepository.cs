@@ -13,7 +13,7 @@ public interface IBasketRepository
 
     Task<bool> AddItemAsync(Basket basket, Product product, int quantity);
 
-    Task<bool> DeleteBasketAsync(int id);
+    Task<bool> DeleteBasketAsync(Guid id);
 
-    Task<bool> RemoveItemAsync(Basket basket, int productId, int quantity);
+    Task<bool> RemoveItemAsync(Basket basket, Guid productId, int quantity);
 }

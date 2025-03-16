@@ -6,7 +6,7 @@ using Domain.RequestHelpers;
 
 public interface IProductRepository
 {
-    Task<Product?> GetProductAsync(int id);
+    Task<Product?> GetProductAsync(Guid id);
 
     IQueryable<Product> GetProductQuery(ProductParams productParams);
 
@@ -16,5 +16,5 @@ public interface IProductRepository
 
     Task<bool> UpdateProductAsync(Product product);
 
-    Task<bool> DeleteProductAsync(int id);
+    Task<bool> DeleteProductAsync(Guid id);
 }

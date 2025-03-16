@@ -1,7 +1,11 @@
 ﻿namespace Domain.Entities.User;
 
+using System.ComponentModel.DataAnnotations.Schema;
+
 using Microsoft.AspNetCore.Identity;
-public class Role : IdentityRole<int>
+
+[Table("AspNetRoles", Schema = "User")]
+public class Role : IdentityRole<Guid>
 {
 
 }

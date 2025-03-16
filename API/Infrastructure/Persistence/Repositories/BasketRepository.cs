@@ -47,12 +47,12 @@ public class BasketRepository(StoreContext storeContext) : IBasketRepository
 		return await storeContext.SaveChangesAsync() > 0;
 	}
 
-	public async Task<bool> DeleteBasketAsync(int id)
+	public async Task<bool> DeleteBasketAsync(Guid id)
 	{
 		return await storeContext.Baskets.Where(b => b.Id == id).ExecuteDeleteAsync() != 0;
 	}
 
-	public async Task<bool> RemoveItemAsync(Basket basket, int productId, int quantity)
+	public async Task<bool> RemoveItemAsync(Basket basket, Guid productId, int quantity)
 	{
 		var item = basket.Items.FirstOrDefault(item => item.ProductId == productId);
 		//TODO: review
