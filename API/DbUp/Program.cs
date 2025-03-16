@@ -5,10 +5,9 @@ using DbUp;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
-var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 var configurationBuilder = new ConfigurationBuilder()
 			.SetBasePath($"{Directory.GetCurrentDirectory()}/Config")
-			.AddJsonFile($"appsettings.{environment}.json", false, true);
+			.AddJsonFile($"appsettings.json", false, true);
 
 var configuration = configurationBuilder.Build();
 var connectionString = configuration.GetConnectionString("DbConnectionString");

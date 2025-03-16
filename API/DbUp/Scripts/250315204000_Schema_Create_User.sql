@@ -54,7 +54,7 @@ CREATE TABLE [User].[AspNetUserClaims](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[ClaimType] [nvarchar](256) NULL,
 	[ClaimValue] [nvarchar](256) NULL,
-	[User_Id] [uniqueidentifier] NOT NULL
+	[UserId] [uniqueidentifier] NOT NULL
 
 	PRIMARY KEY CLUSTERED 
 	(
@@ -63,9 +63,9 @@ CREATE TABLE [User].[AspNetUserClaims](
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[AspNetUserClaims]  WITH CHECK ADD CONSTRAINT [FK_AspNetUserClaims_AspNetUsers_UserId]
-FOREIGN KEY([User_Id])
-REFERENCES [dbo].[AspNetUsers] ([Id])
+ALTER TABLE [User].[AspNetUserClaims]  WITH CHECK ADD CONSTRAINT [FK_AspNetUserClaims_AspNetUsers_UserId]
+FOREIGN KEY([UserId])
+REFERENCES [User].[AspNetUsers] ([Id])
 ON DELETE CASCADE
 GO
 
@@ -87,9 +87,9 @@ CREATE TABLE [User].[AspNetUserLogins](
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[AspNetUserLogins]  WITH CHECK ADD CONSTRAINT [FK_AspNetUserLogins_AspNetUsers_UserId]
-FOREIGN KEY([User_Id])
-REFERENCES [dbo].[AspNetUsers] ([Id])
+ALTER TABLE [User].[AspNetUserLogins]  WITH CHECK ADD CONSTRAINT [FK_AspNetUserLogins_AspNetUsers_UserId]
+FOREIGN KEY([UserId])
+REFERENCES [User].[AspNetUsers] ([Id])
 ON DELETE CASCADE
 GO
 
@@ -109,15 +109,15 @@ CREATE TABLE [User].[AspNetUserRoles](
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[AspNetUserRoles]  WITH CHECK ADD CONSTRAINT [FK_AspNetUserRoles_AspNetUsers_UserId]
-FOREIGN KEY([User_Id])
-REFERENCES [dbo].[AspNetUsers] ([Id])
+ALTER TABLE [User].[AspNetUserRoles]  WITH CHECK ADD CONSTRAINT [FK_AspNetUserRoles_AspNetUsers_UserId]
+FOREIGN KEY([UserId])
+REFERENCES [User].[AspNetUsers] ([Id])
 ON DELETE CASCADE
 GO
 
-ALTER TABLE [dbo].[AspNetUserRoles]  WITH CHECK ADD CONSTRAINT [FK_AspNetUserRoles_AspNetRoles_RoleId]
-FOREIGN KEY([Role_Id])
-REFERENCES [dbo].[AspNetRoles] ([Id])
+ALTER TABLE [User].[AspNetUserRoles]  WITH CHECK ADD CONSTRAINT [FK_AspNetUserRoles_AspNetRoles_RoleId]
+FOREIGN KEY([RoleId])
+REFERENCES [User].[AspNetRoles] ([Id])
 ON DELETE CASCADE
 GO
 
@@ -140,9 +140,9 @@ CREATE TABLE [User].[AspNetUserTokens] (
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[AspNetUserTokens]  WITH CHECK ADD CONSTRAINT [FK_AspNetUserTokens_AspNetUsers_UserId]
-FOREIGN KEY([User_Id])
-REFERENCES [dbo].[AspNetUsers] ([Id])
+ALTER TABLE [User].[AspNetUserTokens]  WITH CHECK ADD CONSTRAINT [FK_AspNetUserTokens_AspNetUsers_UserId]
+FOREIGN KEY([UserId])
+REFERENCES [User].[AspNetUsers] ([Id])
 ON DELETE CASCADE
 GO
 
@@ -167,8 +167,8 @@ CREATE TABLE [User].[Address](
 	) ON [PRIMARY]
 ) ON [PRIMARY]
 
-ALTER TABLE [dbo].[Address]  WITH CHECK ADD CONSTRAINT [FK_Address_AspNetUsers_UserId]
-FOREIGN KEY([User_Id])
-REFERENCES [dbo].[AspNetUsers] ([Id])
+ALTER TABLE [User].[Address]  WITH CHECK ADD CONSTRAINT [FK_Address_AspNetUsers_UserId]
+FOREIGN KEY([UserId])
+REFERENCES [User].[AspNetUsers] ([Id])
 ON DELETE CASCADE
 GO

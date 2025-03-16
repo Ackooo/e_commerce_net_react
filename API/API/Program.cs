@@ -1,12 +1,6 @@
 using API.Configuration;
 using API.Middleware;
 
-using Domain.Entities.User;
-
-using Infrastructure.Persistence;
-
-using Microsoft.AspNetCore.Identity;
-
 #region WebApplicationBuilder
 
 var builder = WebApplication.CreateBuilder(args);
