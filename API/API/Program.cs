@@ -57,6 +57,8 @@ app.MapControllers();
 
 app.UseLocalizationConfiguration();
 
+app.EnsureInitialDbConfig();
+
 await app.RunAsync();
 
 #endregion

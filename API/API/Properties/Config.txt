@@ -4,3 +4,7 @@ StripeSettings:
     WhSecret: cmd - stripe listen
 CloudinarySettings:
     console.cloudinary.com/settings/
+
+
+dotnet ef migrations add InitialCreate --project ../api/infrastructure --startup-project ../api/api
+dotnet ef database update

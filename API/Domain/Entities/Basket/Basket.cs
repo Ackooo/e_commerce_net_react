@@ -6,18 +6,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 [Table(nameof(Basket), Schema = "Store")]
 public class Basket
 {
-	[Key]
 	//[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
- 
+
+	[Key]
 	public Guid Id { get; set; } = Guid.CreateVersion7();
-    
-	//[Required]
-    public required string BuyerId { get; set; }    
 
-    #region Stripe
+	[Required]
+	[MaxLength(256)]
+	public required string BuyerId { get; set; }
 
-    public string? PaymentIntentId { get; set; }
-    public string? ClientSecret { get; set; }
+	#region Stripe
+
+	[MaxLength(256)]
+	public string? PaymentIntentId { get; set; }
+
+	[MaxLength(256)]
+	public string? ClientSecret { get; set; }
 
 	#endregion
 

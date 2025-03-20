@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Identity;
 
 [Table("AspNetUsers", Schema = "User")]
 public class User : IdentityUser<Guid>
-{    
-    public Address? Address { get; set; }
+{
+	#region NavigationProperies
+
+	public Address? Address { get; set; }
+
+	#endregion
 }
