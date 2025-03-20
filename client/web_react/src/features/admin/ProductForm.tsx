@@ -94,10 +94,10 @@ export default function ProductForm({ product, cancelEdit }: Props) {
                 </Grid>
                 <Box display='flex' justifyContent='space-between' sx={{ mt: 3 }}>
                     <Button onClick={cancelEdit} variant='contained' color='inherit'>Cancel</Button>
-                    <LoadingButton 
+                    <LoadingButton
                         loading={isSubmitting}
-                        type='submit' 
-                        variant='contained' 
+                        type='submit'
+                        variant='contained'
                         color='success'>Submit</LoadingButton>
                 </Box>
             </form>

@@ -34,10 +34,7 @@ export default function Login() {
             <Typography component="h1" variant="h5">
                 Sign in
             </Typography>
-            <Box component="form"
-                onSubmit={handleSubmit(submitForm)}
-                noValidate sx={{ mt: 1 }}
-            >
+            <Box component="form" onSubmit={handleSubmit(submitForm)} noValidate sx={{ mt: 1 }} >
                 <TextField
                     margin="normal"
                     fullWidth
@@ -59,11 +56,11 @@ export default function Login() {
                     error={!!errors.password}
                     helperText={errors.password?.message as string}
                 />
-                <LoadingButton 
-                    loading={isSubmitting} 
-                    disabled={!isValid }
-                    type="submit" 
-                    fullWidth 
+                <LoadingButton
+                    loading={isSubmitting}
+                    disabled={!isValid}
+                    type="submit"
+                    fullWidth
                     variant="contained" sx={{ mt: 3, mb: 2 }}
                 >
                     Sign In

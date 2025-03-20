@@ -12,7 +12,6 @@ export default function ProductSearch(){
         dispatch(setProductParams({SearchTerm: event.target.value}))
     }, 500)
 
-
     return(
         <TextField
         label='Search products'

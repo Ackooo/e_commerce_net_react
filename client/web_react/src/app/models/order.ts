@@ -7,7 +7,6 @@ export interface ShippingAddress {
     zip: string;
     country: string;
 }
-
 export interface OrderItem {
     productId: number;
     name: string;
@@ -15,7 +14,6 @@ export interface OrderItem {
     price: number;
     quantity: number;
 }
-
 export interface Order {
     id: string;
     buyerId: string;

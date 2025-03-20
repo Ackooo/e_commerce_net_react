@@ -5,10 +5,9 @@ import { PaginatedResponse } from "../models/pagination";
 import { store } from "../store/configureStore";
 
 const simulateDelay = () => new Promise(resolve => setTimeout(resolve, 500));
-
+//TODO: config api url
 axios.defaults.baseURL = 'https://localhost:5000/api/';
 axios.defaults.withCredentials = true;
-
 const responseBody = (response: AxiosResponse) => response.data;
 
 axios.interceptors.request.use(config=>{
@@ -18,7 +17,7 @@ axios.interceptors.request.use(config=>{
 })
 
 axios.interceptors.response.use(async response => {
-    //testing purpose
+    //TODO: testing purpose
     await simulateDelay();
 
     //lower case because of axios properties
@@ -120,7 +119,6 @@ const Orders = {
 const Payments = {
     createPaymentIntent: () => requests.post('payments', {})
 }
-
 
 const agent = {
     Catalog,

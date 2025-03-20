@@ -1,8 +1,6 @@
 //action type
 export const INCREMENT_COUNTER = "INCREMENT_COUNTER"
 export const DECREMENT_COUNTER = "DECREMENT_COUNTER"
-
-
 export interface CounterState {
     data: number;
     title: string;
@@ -12,7 +10,6 @@ const initialState: CounterState = {
     data: 42,
     title: 'anither redux counter'
 }
-
 //action creator
 export function increment(amount = 1){
     return{
@@ -20,7 +17,6 @@ export function increment(amount = 1){
         payload: amount
     }
 }
-
 export function decrement(amount = 1){
     return{
         type: DECREMENT_COUNTER,
@@ -48,8 +44,7 @@ export default function counterReducer(state = initialState, action: any) {
                 data: state.data - action.payload
             }
         default:
-            //uvek treba vratiti state
-            //zbog inicijalizacije
+            //uvek treba vratiti state, zbog inicijalizacije
             return state;
     }
     return state;

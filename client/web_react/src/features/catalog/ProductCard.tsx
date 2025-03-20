@@ -1,10 +1,7 @@
 import { ListItem, ListItemAvatar, Avatar, ListItemText, Button, Card, CardActions, CardContent, CardMedia, Typography, CardHeader } from "@mui/material";
 import { Product } from "../../app/models/product";
 import { Link } from "react-router-dom";
-//import { useState } from "react";
-//import agent from "../../app/api/agent";
 import { LoadingButton } from "@mui/lab";
-//import { useStoreContext } from "../../app/context/StoreContext";
 import { currencyFormat } from "../../app/util/util";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { addBasketItemAsync, setBasket } from "../basket/basketSlice";
@@ -15,14 +12,10 @@ interface Props {
 
 export default function ProductCard({ product }: Props) {
     //const [loading, setLoading] = useState(false); --local state
-
-    const {status} = useAppSelector(state => state.basket);
-
-
+    const { status } = useAppSelector(state => state.basket);
     //  now can use storecontext to update the basket when get back from api
     //const {setBasket} = useStoreContext();moved to redux below
     const dispatch = useAppDispatch();
-
     /*
     function handleAddItem(productId: number) {
         setLoading(true);
@@ -31,10 +24,7 @@ export default function ProductCard({ product }: Props) {
             .then(basket => dispatch(setBasket(basket)))
             .catch(error => console.log(error))
             .finally(() => setLoading(false));
-
-    }
-            */
-
+    }            */
     return (
         // <ListItem key={product.id}>
         //     <ListItemAvatar>
@@ -71,11 +61,9 @@ export default function ProductCard({ product }: Props) {
             </CardContent>
             <CardActions>
                 <LoadingButton
-                 //loading={loading} 
-                 //onClick={() => handleAddItem(product.id)} size="small">
-                 loading = {status.includes('pendingAddItem' + product.id )}
-                onClick={() => dispatch(addBasketItemAsync({productId: product.id}))} 
-                size="small">
+                    loading={status.includes('pendingAddItem' + product.id)}
+                    onClick={() => dispatch(addBasketItemAsync({ productId: product.id }))}
+                    size="small">
                     Add to cart
                 </LoadingButton>
                 {/* ` za konktatenaciju pa $ za JS   */}

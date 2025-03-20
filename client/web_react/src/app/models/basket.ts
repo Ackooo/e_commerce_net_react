@@ -7,7 +7,6 @@ export interface BasketItem {
     type: string;
     quantity: number;
 }
-
 export interface Basket {
     id: string;
     buyerId: string;

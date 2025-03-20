@@ -1,5 +1,4 @@
 import { FormControl, RadioGroup, FormControlLabel, Radio } from "@mui/material";
-
 interface Props {
     options: any[];
     onChange: (event: any) => void;

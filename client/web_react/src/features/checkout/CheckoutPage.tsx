@@ -12,7 +12,6 @@ import { clearBasket } from '../basket/basketSlice';
 import { LoadingButton } from '@mui/lab';
 import { StripeElementType } from '@stripe/stripe-js';
 import { CardNumberElement, useElements, useStripe } from '@stripe/react-stripe-js';
-
 const steps = ['Shipping address', 'Review your order', 'Payment details'];
 
 export default function CheckoutPage() {
@@ -100,7 +99,6 @@ export default function CheckoutPage() {
             console.log(error);
             setLoading(false);
         }
-
     }
 
     const handleNext = async (data: FieldValues) => {
@@ -110,11 +108,9 @@ export default function CheckoutPage() {
             setActiveStep(activeStep + 1);
         }
     };
-
     const handleBack = () => {
         setActiveStep(activeStep - 1);
     };
-
     function submitDisabled(): boolean {
         if (activeStep === steps.length - 1) {
             return !cardComplete.cardCvc

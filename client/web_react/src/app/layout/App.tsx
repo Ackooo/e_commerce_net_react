@@ -3,25 +3,18 @@ import Header from './Header';
 import { Container, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { Outlet, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-
-//rucno
 import 'react-toastify/dist/ReactToastify.css';
-import { useStoreContext } from "../context/StoreContext";
-import { getCookie } from "../util/util";
-import agent from "../api/agent";
 import LoadingComponent from "./LoadingComponent";
 import { useAppDispatch } from "../store/configureStore";
-import { fetchBasketAsync, setBasket } from "../../features/basket/basketSlice";
+import { fetchBasketAsync } from "../../features/basket/basketSlice";
 import { fetchCurrentUser } from "../../features/account/accountSlice";
 import HomePage from "../../features/home/HomePage";
-
 
 function App() {
   // const {setBasket} = useStoreContext();
   const location = useLocation();
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
-
 
   //nije funkcija zbog renderovanja kruznog zbog dependency
   //ovako se nece menjati pri svakom renderu

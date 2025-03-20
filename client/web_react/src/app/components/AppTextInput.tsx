@@ -1,6 +1,5 @@
 import { TextField } from "@mui/material";
 import { useController, UseControllerProps } from "react-hook-form";
-
 interface Props extends UseControllerProps {
     label: string;
     multiline?: boolean;
@@ -9,10 +8,9 @@ interface Props extends UseControllerProps {
 }
 
 export default function AppTextInput(props: Props) {
-    const {fieldState, field} = useController({...props, defaultValue: ''})
-
+    const { fieldState, field } = useController({ ...props, defaultValue: '' })
     return (
-        <TextField 
+        <TextField
             {...props}
             {...field}
             multiline={props.multiline}

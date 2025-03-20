@@ -6,12 +6,12 @@ import { StripeInput } from './StripeInput';
 import { StripeElementType } from '@stripe/stripe-js';
 
 interface Props {
-  cardState: {elementError: {[key in StripeElementType]?: string}},
+  cardState: { elementError: { [key in StripeElementType]?: string } },
   onCardInputChange: (event: any) => void;
 }
 
-export default function PaymentForm({cardState, onCardInputChange}: Props) {
-  const {control} = useFormContext();
+export default function PaymentForm({ cardState, onCardInputChange }: Props) {
+  const { control } = useFormContext();
 
   return (
     <>
@@ -20,7 +20,7 @@ export default function PaymentForm({cardState, onCardInputChange}: Props) {
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <AppTextInput 
+          <AppTextInput
             name='nameOnCard'
             label='Name on card'
             control={control}
@@ -36,7 +36,7 @@ export default function PaymentForm({cardState, onCardInputChange}: Props) {
             fullWidth
             autoComplete="cc-number"
             variant="outlined"
-            InputLabelProps={{shrink: true}}
+            InputLabelProps={{ shrink: true }}
             InputProps={{
               inputComponent: StripeInput,
               inputProps: {
@@ -55,7 +55,7 @@ export default function PaymentForm({cardState, onCardInputChange}: Props) {
             fullWidth
             autoComplete="cc-exp"
             variant="outlined"
-            InputLabelProps={{shrink: true}}
+            InputLabelProps={{ shrink: true }}
             InputProps={{
               inputComponent: StripeInput,
               inputProps: {
@@ -74,7 +74,7 @@ export default function PaymentForm({cardState, onCardInputChange}: Props) {
             fullWidth
             autoComplete="cc-csc"
             variant="outlined"
-            InputLabelProps={{shrink: true}}
+            InputLabelProps={{ shrink: true }}
             InputProps={{
               inputComponent: StripeInput,
               inputProps: {

@@ -23,12 +23,10 @@ export default function Inventory() {
         setSelectedProduct(product);
         setEditMode(true);
     }
-
     function cancelEdit() {
         if (selectedProduct) setSelectedProduct(undefined);
         setEditMode(false);
     }
-
     function handleDeleteProduct(id: number) {
         setLoading(true);
         setTarget(id)

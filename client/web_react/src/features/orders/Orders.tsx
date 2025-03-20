@@ -6,7 +6,6 @@ import LoadingComponent from "../../app/layout/LoadingComponent";
 import { Order } from "../../app/models/order";
 import { currencyFormat } from "../../app/util/util";
 import OrderDetailed from './OrderDetailed';
-
 export default function Orders() {
     const [orders, setOrders] = useState<Order[] | null>(null);
     const [loading, setLoading] = useState(true);
@@ -21,14 +20,12 @@ export default function Orders() {
     }, []);
 
     if (loading) return <LoadingComponent message="Loading orders..." />
-
     if (selectedOrderNumber !== "" && orders) return (
         <OrderDetailed
             order={orders.find(o => o.id === selectedOrderNumber)!}
             setSelectedOrder={setSelectedOrderNumber}
         />
     )
-
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">

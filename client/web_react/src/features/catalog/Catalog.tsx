@@ -16,7 +16,7 @@ const sortOptions = [
 ]
 
 export default function Catalog() {
-    const {products, filtersLoaded, brands, types, metaData} = useProducts();
+    const { products, filtersLoaded, brands, types, metaData } = useProducts();
     const { productParams } = useAppSelector(state => state.catalog);
     const dispatch = useAppDispatch();
 
@@ -54,12 +54,12 @@ export default function Catalog() {
                 <ProductList products={products} />
             </Grid>
             <Grid item xs={3} />
-            <Grid item xs={9} sx={{mb:2}}>
+            <Grid item xs={9} sx={{ mb: 2 }}>
                 {metaData &&
-                <AppPagination 
-                    metaData={metaData}
-                    onPageChange={(page: number) => dispatch(setPageNumber({pageNumber: page}))}
-                />}
+                    <AppPagination
+                        metaData={metaData}
+                        onPageChange={(page: number) => dispatch(setPageNumber({ pageNumber: page }))}
+                    />}
             </Grid>
         </Grid>
     )

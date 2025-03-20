@@ -3,12 +3,9 @@ import { FormControl, Typography, FormHelperText } from '@mui/material'
 import { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useController, UseControllerProps } from 'react-hook-form'
-
 interface Props extends UseControllerProps { }
-
 export default function AppDropzone(props: Props) {
     const { fieldState, field } = useController({ ...props, defaultValue: null })
-
     const dzStyles = {
         display: 'flex',
         border: 'dashed 3px #eee',
@@ -19,17 +16,14 @@ export default function AppDropzone(props: Props) {
         height: 200,
         width: 500
     }
-
     const dzActive = {
         borderColor: 'green'
     }
-
     const onDrop = useCallback((acceptedFiles: any) => {
         acceptedFiles[0] = Object.assign(acceptedFiles[0], { preview: URL.createObjectURL(acceptedFiles[0]) });
         field.onChange(acceptedFiles[0]);
     }, [field])
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
-
     return (
         <div {...getRootProps()}>
             <FormControl style={isDragActive ? { ...dzStyles, ...dzActive } : dzStyles} error={!!fieldState.error} >

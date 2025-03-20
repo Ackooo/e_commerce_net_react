@@ -13,14 +13,10 @@ export default function RequireAuth({roles}: Props) {
     if (!user) {
         toast.error('You need to be logged in to do that!');
         return <Navigate to='/login' state={{from: location}} />
-    }
-
-    
+    }    
     if (roles && !roles?.some(r => user.roles?.includes(r))) {
         toast.error('Not authorised to access this area');
         return <Navigate to='/catalog' />
     }
-    
-
     return <Outlet />
 }
