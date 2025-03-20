@@ -1,5 +1,6 @@
 ﻿namespace Domain.Entities.Order;
 
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,35 +10,59 @@ using Domain.Shared.Enums;
 [Table(nameof(Order), Schema = "Store")]
 public class Order
 {
+
+	[Column]
 	[Key]
+	[DefaultValue("NEWSEQUENTIALID()")]
 	public Guid Id { get; set; } = Guid.CreateVersion7();
 
-    public DateTime OrderDate { get; set; } = DateTime.UtcNow;
+	[Column(TypeName = "datetime2(7)")]
+	[Required]
+	public DateTime OrderDate { get; set; } = DateTime.UtcNow;
 
+	[Column]
+	[Required]
 	[Range(0, long.MaxValue)]
-    public long Subtotal { get; set; }
+	public required long Subtotal { get; set; }
 
+	[Column]
+	[Required]
 	[Range(0, long.MaxValue)]
-    public long DeliveryFee { get; set; }
+	public required long DeliveryFee { get; set; }
 
-    public OrderStatus OrderStatus { get; set; } = OrderStatus.Pending;
+	[Column]
+	[Required]
+	public OrderStatus OrderStatus { get; set; } = OrderStatus.Pending;
 
-    [Required]
-    public required Address ShippingAddress { get; set; }
+	[Column]
+	[Required]
+	[ForeignKey(nameof(Address))]
+	public long ShippingAddressId { get; set; }
 
-
+	[Column]
 	[Required]
 	[MaxLength(256)]
 	public required string BuyerId { get; set; }
 
-    public required List<OrderItem> OrderItems { get; set; }
-
+	[Column]
 	[MaxLength(256)]
 	public string? PaymentIntentId { get; set; }
 
-    public long GetTotal()
-    {
-        return Subtotal + DeliveryFee;
-    }
+	#region NavigationProperies
+
+	public required Address ShippingAddress { get; set; }
+
+	public required List<OrderItem> OrderItems { get; set; }
+
+	#endregion
+
+	#region Methods
+
+	public long GetTotal()
+	{
+		return Subtotal + DeliveryFee;
+	}
+
+	#endregion
 
 }
