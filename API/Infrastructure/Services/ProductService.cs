@@ -13,7 +13,7 @@ using Infrastructure.Persistence.Repositories;
 
 public class ProductService(IProductRepository productRepository) : IProductService
 {
-	public async Task<Product?> GetProductAsync(Guid id)
+	public async Task<Product?> GetProductAsync(long id)
 	{
 		return await productRepository.GetProductAsync(id);
 	}
@@ -39,7 +39,7 @@ public class ProductService(IProductRepository productRepository) : IProductServ
 		return await productRepository.UpdateProductAsync(product);
 	}
 
-	public async Task<bool> DeleteProductAsync(Guid id)
+	public async Task<bool> DeleteProductAsync(long id)
 	{
 		return await productRepository.DeleteProductAsync(id);
 	}

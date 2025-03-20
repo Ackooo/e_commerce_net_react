@@ -24,8 +24,8 @@ Console.ReadLine();
 
 var upgrader =
 	DeployChanges.To
-	.SqlDatabase(connectionString)
-	.JournalToSqlTable("Version", "DbVersion")
+	.SqlDatabase(connectionString, "App")
+	.JournalToSqlTable("App", "DbVersion")
 	.LogToConsole()
 	//.WithScriptsFromFileSystem("Scripts")
 	.WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())

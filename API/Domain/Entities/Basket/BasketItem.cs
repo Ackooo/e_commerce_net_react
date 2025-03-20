@@ -8,16 +8,13 @@ using Product;
 public class BasketItem
 {
     public Guid Id { get; set; } = Guid.CreateVersion7();
-    public long CIId { get; set; }
-
     public int Quantity { get; set; }
+	public Guid BasketId { get; set; }
+	public long ProductId { get; set; }
 
-    #region NavigationProperies
+	#region NavigationProperies
 
-    public Guid ProductId { get; set; }
-    public Product Product { get; set; }
-    //[ForeignKey("Basket")]
-    public Guid BasketId { get; set; }
+	public Product Product { get; set; }
     public Basket Basket { get; set; }
 
     #endregion

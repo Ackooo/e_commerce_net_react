@@ -34,7 +34,7 @@ public class BasketController(IBasketService basketService, IProductService prod
 
     [HttpPost]
     [ProducesResponseType(typeof(BasketDto), 200)]
-    public async Task<ActionResult<BasketDto>> AddItemToBasket(Guid productId, int quantity)
+    public async Task<ActionResult<BasketDto>> AddItemToBasket(long productId, int quantity)
     {
         var buyerId = GetBuyerId();
         var basket = await basketService.GetBasketAsync(buyerId);
@@ -55,7 +55,7 @@ public class BasketController(IBasketService basketService, IProductService prod
     #region DELETE
 
     [HttpDelete]
-    public async Task<ActionResult> RemoveBasketItem(Guid productId, int quantity)
+    public async Task<ActionResult> RemoveBasketItem(long productId, int quantity)
     {
         var buyerId = GetBuyerId();
         var basket = await basketService.GetBasketAsync(buyerId);

@@ -8,15 +8,13 @@ using Domain.Extensions;
 using Domain.Interfaces.Services;
 using Domain.RequestHelpers;
 
-using Infrastructure.Services;
-
 using Localization;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
-public class ProductsController(IProductService productService, ImageService imageService,
+public class ProductsController(IProductService productService, IImageService imageService,
     IMapper mapper, IStringLocalizer<Resource> localizer) : BaseController
 {
     #region GET
@@ -33,7 +31,7 @@ public class ProductsController(IProductService productService, ImageService ima
 
     [HttpGet("{id}", Name = "GetProduct")]
     [ProducesResponseType(typeof(Product), 200)]
-    public async Task<ActionResult<Product>> GetProduct(Guid id)
+    public async Task<ActionResult<Product>> GetProduct(long id)
 	{
         var product = await productService.GetProductAsync(id);
         return product == null ? NotFound() : product;
@@ -104,7 +102,7 @@ public class ProductsController(IProductService productService, ImageService ima
 
     [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteProduct(Guid id)
+    public async Task<ActionResult> DeleteProduct(long id)
     {
         var product = await productService.GetProductAsync(id);
         if (product == null) return NotFound();

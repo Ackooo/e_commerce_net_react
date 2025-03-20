@@ -5,16 +5,9 @@ using Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
-public class BuggyController : BaseController
+public class BuggyController(IStringLocalizer<Resource> localizer) : BaseController
 {
-    private readonly IStringLocalizer<Resource> _localizer;
-
-    public BuggyController(IStringLocalizer<Resource> localizer)
-    {
-        _localizer = localizer;
-    }
-
-    [HttpGet("not-found")]
+	[HttpGet("not-found")]
     public ActionResult GetNotFound()
     {
         return NotFound();
@@ -23,7 +16,7 @@ public class BuggyController : BaseController
     [HttpGet("bad-request")]
     public ActionResult GetBadRequest()
     {
-        return BadRequest(new ProblemDetails { Title = _localizer["_BadRequest"] });
+        return BadRequest(new ProblemDetails { Title = localizer["_BadRequest"] });
     }
 
     [HttpGet("unauthorised")]

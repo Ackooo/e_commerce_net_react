@@ -33,7 +33,7 @@ public class BasketService(IBasketRepository basketRepository) : IBasketService
 		return await basketRepository.DeleteBasketAsync(id);
 	}
 
-	public async Task<bool> RemoveItemAsync(Basket basket, Guid productId, int quantity)
+	public async Task<bool> RemoveItemAsync(Basket basket, long productId, int quantity)
 	{
 		return await basketRepository.RemoveItemAsync(basket, productId, quantity);
 	}

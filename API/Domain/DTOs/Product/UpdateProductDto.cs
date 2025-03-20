@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 public class UpdateProductDto
 {
-    public Guid Id { get; set; }
+    public long Id { get; set; }
     [Required]
     public string Name { get; set; }
     [Required]

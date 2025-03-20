@@ -6,12 +6,11 @@ using Domain.RequestHelpers;
 using Domain.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Domain.DTOs.Product;
-using Domain.Entities.Basket;
 
 public class ProductRepository(StoreContext storeContext) : IProductRepository
 {
 
-	public async Task<Product?> GetProductAsync(Guid id)
+	public async Task<Product?> GetProductAsync(long id)
 	{
 		return await storeContext.Products.FindAsync(id);
 	}
@@ -46,7 +45,7 @@ public class ProductRepository(StoreContext storeContext) : IProductRepository
 		return await storeContext.SaveChangesAsync() != 0;
 	}
 
-	public async Task<bool> DeleteProductAsync(Guid id)
+	public async Task<bool> DeleteProductAsync(long id)
 	{
 		return await storeContext.Products.Where(p => p.Id == id).ExecuteDeleteAsync() != 0;
 	}

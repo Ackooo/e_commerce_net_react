@@ -34,7 +34,7 @@ public class OrderService(IOrderRepository orderRepository, IBasketRepository ba
 
 		var items = new List<OrderItem>();
 
-		foreach (var item in basket.Items)
+		foreach (var item in basket.BasketItems)
 		{
 			var productItem = item.Product;
 			//var productItem = await context.Products.FindAsync(item.ProductId);

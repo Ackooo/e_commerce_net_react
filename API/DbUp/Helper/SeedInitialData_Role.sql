@@ -1,7 +1,6 @@
-INSERT INTO AspNetRoles (Name, NormalizedName)
+INSERT INTO [User].[AspNetRoles] (Id, Name, NormalizedName)
 VALUES 
-('SuperAdmin', 'SUPERADMIN'),
-('Admin', 'ADMIN'),
-('Worker', 'WORKER'),
-('Member', 'MEMBER')
-
+(NEWID(), 'SuperAdmin', 'SUPERADMIN'),
+(NEWID(), 'Admin', 'ADMIN'),
+(NEWID(), 'Worker', 'WORKER'),
+(NEWID(), 'Member', 'MEMBER')

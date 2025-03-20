@@ -1,0 +1,10 @@
+﻿namespace Domain.Shared.Constants;
+
+public static class Constants
+{
+	public const string DbSchemaNameApp = "App";
+	public const string DbSchemaNameUser = "User";
+	public const string DbSchemaNameStore = "Store";
+
+
+}

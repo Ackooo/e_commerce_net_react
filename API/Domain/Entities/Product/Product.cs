@@ -5,9 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 [Table(nameof(Product), Schema = "Store")]
 public class Product
 {
-    public Guid Id { get; set; } = Guid.CreateVersion7();
-    public long CIId { get; set; }
-
+    public long Id { get; set; }
     public required string Name { get; set; }
     public required string Description { get; set; }
     public long Price { get; set; }

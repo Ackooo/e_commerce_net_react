@@ -25,9 +25,9 @@ builder.Services.AddIdentityConfiguration();
 
 builder.Services.AddAuthenticationConfiguration(configuration);
 
-builder.Services.AddDependencyConfiguration();
-
 builder.Services.AddLocalizationConfiguration();
+
+builder.Services.AddDependencyConfiguration();
 
 #endregion
 
@@ -56,8 +56,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseLocalizationConfiguration();
-
-await app.InitializeDatabaseAsync();
 
 await app.RunAsync();
 

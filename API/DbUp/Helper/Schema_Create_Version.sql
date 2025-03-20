@@ -1,2 +1,2 @@
-CREATE SCHEMA [Version]
+CREATE SCHEMA [App]
 GO

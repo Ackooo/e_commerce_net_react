@@ -1,4 +1,4 @@
-INSERT INTO Products (Name, Description, Price, PictureUrl, Brand, Type, QuantityInStock)
+INSERT INTO [Store].[Product] (Name, Description, Price, PictureUrl, Brand, Type, QuantityInStock)
 VALUES 
 ('Angular Speedster Board 2000', 
  'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.', 

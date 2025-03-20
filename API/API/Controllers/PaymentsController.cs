@@ -16,7 +16,7 @@ using Stripe;
 using Microsoft.Extensions.Options;
 using Domain.Shared.Configurations;
 
-public class PaymentsController(PaymentService paymentService, IBasketService basketService, IOrderService orderService,
+public class PaymentsController(IPaymentService paymentService, IBasketService basketService, IOrderService orderService,
     IOptionsMonitor<StripeSettings> stripeSettings, IStringLocalizer<Resource> localizer) : BaseController
 {
 
