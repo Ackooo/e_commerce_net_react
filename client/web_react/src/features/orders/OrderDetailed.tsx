@@ -6,7 +6,7 @@ import BasketTable from "../basket/BasketTable";
 
 interface Props {
     order: Order;
-    setSelectedOrder: (id: number) => void;
+    setSelectedOrder: (id: string) => void;
 }
 
 export default function OrderDetailed({ order, setSelectedOrder }: Props) {
@@ -15,7 +15,7 @@ export default function OrderDetailed({ order, setSelectedOrder }: Props) {
         <>
             <Box display='flex' justifyContent='space-between'>
                 <Typography sx={{ p: 2 }} gutterBottom variant='h4'>Order# {order.id} - {order.orderStatus}</Typography>
-                <Button onClick={() => setSelectedOrder(0)} sx={{ m: 2 }} size='large' variant='contained'>Back to orders</Button>
+                <Button onClick={() => setSelectedOrder("")} sx={{ m: 2 }} size='large' variant='contained'>Back to orders</Button>
             </Box>
             {/* lazyness - reuse of basketTable */}
             <BasketTable items={order.orderItems as BasketItem[]} isBasket={false} />

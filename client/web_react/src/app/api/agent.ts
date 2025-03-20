@@ -6,7 +6,7 @@ import { store } from "../store/configureStore";
 
 const simulateDelay = () => new Promise(resolve => setTimeout(resolve, 500));
 
-axios.defaults.baseURL = 'http://localhost:5000/api/';
+axios.defaults.baseURL = 'https://localhost:5000/api/';
 axios.defaults.withCredentials = true;
 
 const responseBody = (response: AxiosResponse) => response.data;
@@ -113,7 +113,7 @@ const Account = {
 
 const Orders = {
     list: () => requests.get('orders'),
-    fetch: (id:number) => requests.get(`orders/${id}`),
+    fetch: (id:string) => requests.get(`orders/${id}`),
     create: (values:any) => requests.post('orders', values)
 }
 

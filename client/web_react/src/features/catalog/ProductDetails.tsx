@@ -17,8 +17,8 @@ export default function ProductDetails() {
     const dispatch = useAppDispatch();
     const {id} = useParams<{ id: string }>();
     //const [product, setProducts] = useState<Product | null>(null);
-    let idAsString:string = id!; 
-    const product = useAppSelector(state => productSelectors.selectById(state, parseInt(idAsString))); //samo id kod njega
+    //let idAsString:string = id!;
+    const product = useAppSelector(state => productSelectors.selectById(state, id!)); //samo id kod njega
     //const [loading, setLoading] = useState(true);
     const {status: productStatus} = useAppSelector(state => state.catalog); //nadimak za catalogov status jer konflikt u imenu sa basket.status
     const [quantity, setQuantity] = useState(0);

@@ -10,7 +10,7 @@ import OrderDetailed from './OrderDetailed';
 export default function Orders() {
     const [orders, setOrders] = useState<Order[] | null>(null);
     const [loading, setLoading] = useState(true);
-    const [selectedOrderNumber, setSelectedOrderNumber] = useState(0);
+    const [selectedOrderNumber, setSelectedOrderNumber] = useState('');
 
     useEffect(() => {
         setLoading(true);
@@ -22,7 +22,7 @@ export default function Orders() {
 
     if (loading) return <LoadingComponent message="Loading orders..." />
 
-    if (selectedOrderNumber > 0 && orders) return (
+    if (selectedOrderNumber !== "" && orders) return (
         <OrderDetailed
             order={orders.find(o => o.id === selectedOrderNumber)!}
             setSelectedOrder={setSelectedOrderNumber}

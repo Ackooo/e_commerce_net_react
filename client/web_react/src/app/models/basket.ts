@@ -9,7 +9,7 @@ export interface BasketItem {
 }
 
 export interface Basket {
-    id: number;
+    id: string;
     buyerId: string;
     items: BasketItem[];
     paymentIntentId?: string;

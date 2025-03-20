@@ -17,7 +17,7 @@ export interface OrderItem {
 }
 
 export interface Order {
-    id: number;
+    id: string;
     buyerId: string;
     orderDate: string;
     shippingAddress: ShippingAddress;
