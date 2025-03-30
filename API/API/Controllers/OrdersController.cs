@@ -1,5 +1,8 @@
 ﻿namespace API.Controllers;
 
+using API.Controllers.Common;
+using API.Middleware;
+
 using Domain.DTOs.Order;
 using Domain.Interfaces.Services;
 using Domain.Shared.Enums;
@@ -15,7 +18,8 @@ using Microsoft.Extensions.Localization;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class OrdersController(IOrderService orderService, IStringLocalizer<Resource> localizer) : ControllerBase
+[ApiBase(Order = 1)]
+public class OrdersController(IOrderService orderService, IStringLocalizer<Resource> localizer) : ApiBaseController
 {
 	#region GET
 

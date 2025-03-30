@@ -1,24 +1,28 @@
 ﻿namespace API.Controllers;
 
+using System.Threading.Tasks;
+
+using API.Controllers.Common;
+using API.Middleware;
+
 using Domain.DTOs.Basket;
 using Domain.Entities.Basket;
-using Domain.Interfaces.Services;
 using Domain.Extensions;
+using Domain.Interfaces.Services;
 
+using Localization;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Localization;
-using System.Threading.Tasks;
-using Infrastructure.Authentication;
-using Domain.Shared.Enums;
-using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
 //[HasPermission(Permissions.BasketAccess)]
+[ApiBase(Order = 1)]
 public class BasketController(IBasketService basketService, IProductService productService,
-	IStringLocalizer<Resource> localizer) : ControllerBase
+	IStringLocalizer<Resource> localizer) : ApiBaseController
 {
 	#region GET
 

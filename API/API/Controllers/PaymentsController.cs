@@ -1,13 +1,13 @@
 ﻿namespace API.Controllers;
 
+using API.Controllers.Common;
+using API.Middleware;
+
 using Domain.DTOs.Basket;
 using Domain.DTOs.Order;
 using Domain.Extensions;
 using Domain.Interfaces.Services;
 using Domain.Shared.Configurations;
-using Domain.Shared.Enums;
-
-using Infrastructure.Authentication;
 
 using Localization;
 
@@ -22,8 +22,9 @@ using Stripe;
 [Route("api/[controller]")]
 [Authorize]
 //[HasPermission(Permissions.PaymentAccess)]
+[ApiBase(Order = 1)]
 public class PaymentsController(IPaymentService paymentService, IBasketService basketService, IOrderService orderService,
-	IOptionsMonitor<StripeSettings> stripeSettings, IStringLocalizer<Resource> localizer) : ControllerBase
+	IOptionsMonitor<StripeSettings> stripeSettings, IStringLocalizer<Resource> localizer) : ApiBaseController
 {
 
 	[HttpPost]

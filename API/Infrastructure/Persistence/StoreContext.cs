@@ -14,7 +14,8 @@ using Microsoft.Extensions.Options;
 
 //[DbContext(typeof(StoreContext))]
 public class StoreContext(DbContextOptions options, IOptionsMonitor<ConnectionSettings> connetionSettings)
-	: IdentityDbContext<User, Role, Guid>(options)
+	//: IdentityDbContext<User, Role, Guid>(options)	
+	: DbContext(options)
 {
 
 	#region Store
@@ -31,25 +32,40 @@ public class StoreContext(DbContextOptions options, IOptionsMonitor<ConnectionSe
 
 	public DbSet<Address> Addresses { get; set; }
 	public DbSet<Permission> Permissions { get; set; }
-	public override DbSet<Role> Roles { get; set; }
+	public DbSet<Role> Roles { get; set; }
 	public DbSet<RolePermission> RolePermissions { get; set; }
-	public override DbSet<User> Users { get; set; }
+	public DbSet<User> Users { get; set; }
 
 	#endregion
 
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
-		builder.HasDefaultSchema(DbConstants.DbSchemaNameUser);
+		base.OnModelCreating(builder);		
 
-		builder.Entity<IdentityUser>().ToTable(nameof(User));
-		builder.Entity<IdentityRole>().ToTable(nameof(Role));
+		builder.Ignore<IdentityUserToken<Guid>>();
+		builder.Ignore<IdentityUserRole<Guid>>();
+		builder.Ignore<IdentityUserLogin<Guid>>();
+		builder.Ignore<IdentityUserClaim<Guid>>();
+		builder.Ignore<IdentityRoleClaim<Guid>>();
+
+		builder.Entity<User>(x =>
+		{			
+			x.Ignore(c => c.LockoutEnabled);
+			x.Ignore(c => c.TwoFactorEnabled);
+			x.Ignore(c => c.LockoutEnd);
+			x.Ignore(c => c.PhoneNumberConfirmed);
+		});
+
+		builder.Entity<User>()
+			.HasMany(x => x.Roles)
+			.WithMany(x => x.Users)
+			.UsingEntity<UserRole>();
 
 		builder.Entity<Role>()
 			.HasMany(x => x.Permissions)
 			.WithMany(x => x.Roles)
 			.UsingEntity<RolePermission>();
 
-		base.OnModelCreating(builder);
 	}
 
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

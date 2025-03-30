@@ -11,9 +11,9 @@ using Microsoft.EntityFrameworkCore;
 [Table(nameof(User), Schema = DbConstants.DbSchemaNameUser)]
 //[Table(Constants.IdentityUserTableName, Schema = Constants.DbSchemaNameUser)]
 [Index(nameof(NormalizedEmail), IsUnique = true,
-	Name = $"UX_{DbConstants.IdentityUserTableName}_{nameof(NormalizedEmail)}")]
+	Name = $"UX_{nameof(User)}_{nameof(NormalizedEmail)}")]
 [Index(nameof(NormalizedUserName), IsUnique = true,
-	Name = $"UX_{DbConstants.IdentityUserTableName}_{nameof(NormalizedUserName)}")]
+	Name = $"UX_{nameof(User)}_{nameof(NormalizedUserName)}")]
 public class User : IdentityUser<Guid>
 {
 

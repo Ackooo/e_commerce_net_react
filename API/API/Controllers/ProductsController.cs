@@ -1,5 +1,8 @@
 ﻿namespace API.Controllers;
 
+using API.Controllers.Common;
+using API.Middleware;
+
 using AutoMapper;
 
 using Domain.DTOs.Product;
@@ -17,8 +20,9 @@ using Microsoft.Extensions.Localization;
 [ApiController]
 [Route("api/[controller]")]
 //[HasPermission(Permissions.ProductAccess)]
+[ApiBase(Order = 1)]
 public class ProductsController(IProductService productService, IImageService imageService,
-	IMapper mapper, IStringLocalizer<Resource> localizer) : ControllerBase
+	IMapper mapper, IStringLocalizer<Resource> localizer) : ApiBaseController
 {
 	#region GET
 

@@ -3,7 +3,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-[Table(nameof(Address), Schema = "User")]
+using Domain.Shared.Constants;
+
+[Table(nameof(Address), Schema = DbConstants.DbSchemaNameUser)]
 public class Address
 {
 

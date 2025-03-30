@@ -2,6 +2,8 @@
 
 using DbUp;
 
+using Domain.Shared.Constants;
+
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
@@ -23,9 +25,9 @@ Console.WriteLine("Check and press Enter to proceed");
 Console.ReadLine();
 
 var upgrader =
-	DeployChanges.To
-	.SqlDatabase(connectionString, "App")
-	.JournalToSqlTable("App", "DbVersion")
+DeployChanges.To
+	.SqlDatabase(connectionString, DbConstants.DbSchemaNameApp)
+	.JournalToSqlTable(DbConstants.DbSchemaNameApp, "DbHistory")
 	.LogToConsole()
 	//.WithScriptsFromFileSystem("Scripts")
 	.WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())

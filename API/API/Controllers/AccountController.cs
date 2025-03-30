@@ -10,12 +10,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using API.Middleware;
+using API.Controllers.Common;
 
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
+[ApiBase(Order = 1)]
 public class AccountController(UserManager<User> userManager,
-	ITokenService tokenService, IBasketService basketService) : ControllerBase
+	ITokenService tokenService, IBasketService basketService) : ApiBaseController
 {
 
 	[HttpPost]
@@ -95,8 +98,10 @@ public class AccountController(UserManager<User> userManager,
 	[HttpGet]
 	[Route("savedAddress", Name = "GetSavedAddress")]
 	[ProducesResponseType(typeof(Address), 200)]
-	public async Task<ActionResult<Address>> GetSavedAddress()
+	public async Task<ActionResult<Address?>> GetSavedAddress()
 	{
+		if (UserId == Guid.Empty) return BadRequest();		
+
 		return await userManager.Users
 			.Where(x => x.UserName == User.Identity.Name)
 			.Select(user => user.Address)

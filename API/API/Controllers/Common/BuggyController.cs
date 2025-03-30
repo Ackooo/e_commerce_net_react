@@ -1,4 +1,4 @@
-﻿namespace API.Controllers;
+﻿namespace API.Controllers.Common;
 
 using Localization;
 
@@ -7,7 +7,7 @@ using Microsoft.Extensions.Localization;
 
 [ApiController]
 [Route("api/[controller]")]
-public class BuggyController(IStringLocalizer<Resource> localizer) : ControllerBase
+public class BuggyController(IStringLocalizer<Resource> localizer) : ApiBaseController
 {
 	[HttpGet("not-found")]
     public ActionResult GetNotFound()

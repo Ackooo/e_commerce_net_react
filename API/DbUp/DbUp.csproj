@@ -8,13 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Scripts\250315204000_Schema_Create_User.sql" />
-    <None Remove="Scripts\250315204010_Schema_Create_Store.sql" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Scripts\250315204000_Schema_Create_User.sql" />
-    <EmbeddedResource Include="Scripts\250315204010_Schema_Create_Store.sql" />
+    <EmbeddedResource Include="Scripts\250330190000_Add_Initial_Roles.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +17,10 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="9.0.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

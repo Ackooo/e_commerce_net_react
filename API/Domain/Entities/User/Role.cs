@@ -6,7 +6,7 @@ using Domain.Shared.Constants;
 
 using Microsoft.AspNetCore.Identity;
 
-[Table(DbConstants.IdentityRoleTableName, Schema = DbConstants.DbSchemaNameUser)]
+[Table(nameof(Role), Schema = DbConstants.DbSchemaNameUser)]
 public class Role : IdentityRole<Guid>
 {
 

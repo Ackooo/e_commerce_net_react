@@ -3,6 +3,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+using Domain.Shared.Constants;
+
+[Table(nameof(Permission), Schema = DbConstants.DbSchemaNameUser)]
 public class Permission
 {
 
