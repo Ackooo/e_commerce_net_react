@@ -77,7 +77,7 @@ function createFormData(item:any){
     return formData;
 }
 
-const Admin={
+const Vendor={
     createProduct: (product:any) =>requests.postForm('products', createFormData(product)),
     updateProduct: (product:any) =>requests.putForm('products', createFormData(product)),
     deleteProduct: (id: number) => requests.delete(`products/${id}`),
@@ -127,7 +127,7 @@ const agent = {
     Account,
     Orders,
     Payments,
-    Admin
+    Vendor
 }
 
 export default agent;

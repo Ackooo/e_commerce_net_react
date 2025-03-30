@@ -39,9 +39,9 @@ export default function ProductForm({ product, cancelEdit }: Props) {
         try {
             let response: Product;
             if (product) {
-                response = await agent.Admin.updateProduct(data);
+                response = await agent.Vendor.updateProduct(data);
             } else {
-                response = await agent.Admin.createProduct(data);
+                response = await agent.Vendor.createProduct(data);
             }
             dispatch(setProduct(response));
             cancelEdit();

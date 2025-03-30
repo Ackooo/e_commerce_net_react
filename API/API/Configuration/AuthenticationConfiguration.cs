@@ -1,12 +1,16 @@
 ﻿namespace API.Configuration;
 
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
+
+using Infrastructure.Authentication;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
 
 public static class AuthenticationConfiguration
 {
-    public static void AddAuthenticationConfiguration(this IServiceCollection services, IConfiguration configuration)
+    public static void AddAuthorizationConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
         {
@@ -22,5 +26,8 @@ public static class AuthenticationConfiguration
         });
 
         services.AddAuthorization();
+
+		services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+		services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
     }
 }

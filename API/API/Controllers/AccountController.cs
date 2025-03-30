@@ -1,4 +1,6 @@
-﻿using Domain.DTOs.User;
+﻿namespace API.Controllers;
+
+using Domain.DTOs.User;
 using Domain.Entities.Basket;
 using Domain.Entities.User;
 using Domain.Interfaces.Services;
@@ -9,104 +11,110 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Controllers;
-
+[ApiController]
+[Route("api/[controller]")]
+[Authorize]
 public class AccountController(UserManager<User> userManager,
-    ITokenService tokenService, IBasketService basketService) : BaseController
+	ITokenService tokenService, IBasketService basketService) : ControllerBase
 {
-    [HttpPost("login")]
-    [ProducesResponseType(typeof(UserDto), 200)]
-    public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
-    {
-        var user = await userManager.FindByNameAsync(loginDto.Username);
-        if (user == null || !await userManager.CheckPasswordAsync(user, loginDto.Password))
-        {
-            return Unauthorized();
-        }
 
-        var userBasket = await RetrieveBasket(loginDto.Username);
-        var anonBasket = await RetrieveBasket(Request.Cookies["buyerId"]);
+	[HttpPost]
+	[Route("Login", Name = "Login")]
+	[AllowAnonymous]
+	[ProducesResponseType(typeof(UserDto), 200)]
+	public async Task<ActionResult<UserDto>> LoginAsync(LoginDto loginDto)
+	{
+		var user = await userManager.FindByNameAsync(loginDto.Username);
+		if (user == null || !await userManager.CheckPasswordAsync(user, loginDto.Password))
+		{
+			return Unauthorized();
+		}
 
-        if (anonBasket != null)
-        {
-            if (userBasket != null) await basketService.DeleteBasketAsync(userBasket.Id);
-            anonBasket.BuyerId = user.UserName;
-            Response.Cookies.Delete("buyerId");
-        }
+		var userBasket = await RetrieveBasket(loginDto.Username);
+		var anonBasket = await RetrieveBasket(Request.Cookies["buyerId"]);
 
-        return new UserDto
-        {
-            Email = user.Email,
-            Token = await tokenService.GenerateToken(user),
-            Basket = anonBasket != null ? anonBasket.MapBasketToDto() : userBasket?.MapBasketToDto()
-        };
-    }
+		if (anonBasket != null)
+		{
+			if (userBasket != null) await basketService.DeleteBasketAsync(userBasket.Id);
+			anonBasket.BuyerId = user.UserName;
+			Response.Cookies.Delete("buyerId");
+		}
 
-    [HttpPost("register")]
-    public async Task<ActionResult> Register(RegisterDto registerDto)
-    {
-        var user = new User
-        {
-            UserName = registerDto.Username,
-            Email = registerDto.Email
-        };
+		return new UserDto
+		{
+			Email = user.Email,
+			Token = await tokenService.GenerateTokenAsync(user),
+			Basket = anonBasket != null ? anonBasket.MapBasketToDto() : userBasket?.MapBasketToDto()
+		};
+	}
 
-        var result = await userManager.CreateAsync(user, registerDto.Password);
-        if (!result.Succeeded)
-        {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(error.Code, error.Description);
-            }
+	[HttpPost]
+	[Route("Register", Name = "Register")]
+	[AllowAnonymous]
+	public async Task<ActionResult> RegisterAsync(RegisterDto registerDto)
+	{
+		var user = new User
+		{
+			UserName = registerDto.Username,
+			Email = registerDto.Email
+		};
 
-            return ValidationProblem();
-        }
+		var result = await userManager.CreateAsync(user, registerDto.Password);
+		if (!result.Succeeded)
+		{
+			foreach (var error in result.Errors)
+			{
+				ModelState.AddModelError(error.Code, error.Description);
+			}
 
-        await userManager.AddToRoleAsync(user, "Member");
+			return ValidationProblem();
+		}
 
-        return StatusCode(201);
+		await userManager.AddToRoleAsync(user, "Member");
 
-    }
+		return StatusCode(201);
 
-    [Authorize]
-    [HttpGet("currentUser")]
-    [ProducesResponseType(typeof(UserDto), 200)]
-    public async Task<ActionResult<UserDto>> GetCurrentUser()
-    {
-        var user = await userManager.FindByNameAsync(User.Identity.Name);
-        var userBasket = await RetrieveBasket(User.Identity.Name);
+	}
 
-        return new UserDto
-        {
-            Email = user.Email,
-            Token = await tokenService.GenerateToken(user),
-            Basket = userBasket?.MapBasketToDto()
-        };
-    }
+	[HttpGet("currentUser")]
+	[Route("currentUser", Name = "GetCurrentUser")]
+	[ProducesResponseType(typeof(UserDto), 200)]
+	public async Task<ActionResult<UserDto>> GetCurrentUserAsync()
+	{
+		var user = await userManager.FindByNameAsync(User.Identity.Name);
+		var userBasket = await RetrieveBasket(User.Identity.Name);
 
-    [Authorize]
-    [HttpGet("savedAddress")]
-    [ProducesResponseType(typeof(Address), 200)]
-    public async Task<ActionResult<Address>> GetSavedAddress()
-    {
-        return await userManager.Users
-            .Where(x => x.UserName == User.Identity.Name)
-            .Select(user => user.Address)
-            .FirstOrDefaultAsync();
-    }
+		return new UserDto
+		{
+			Email = user.Email,
+			Token = await tokenService.GenerateTokenAsync(user),
+			Basket = userBasket?.MapBasketToDto()
+		};
+	}
+
+	[HttpGet]
+	[Route("savedAddress", Name = "GetSavedAddress")]
+	[ProducesResponseType(typeof(Address), 200)]
+	public async Task<ActionResult<Address>> GetSavedAddress()
+	{
+		return await userManager.Users
+			.Where(x => x.UserName == User.Identity.Name)
+			.Select(user => user.Address)
+			.FirstOrDefaultAsync();
+	}
 
 
-    //Copied from the basket controller
-    private async Task<Basket?> RetrieveBasket(string buyerId)
-    {
-        if (string.IsNullOrEmpty(buyerId))
-        {
-            Response.Cookies.Delete("buyerId");
-            return null;
-        }
+	//Copied from the basket controller
+	private async Task<Basket?> RetrieveBasket(string buyerId)
+	{
+		if (string.IsNullOrEmpty(buyerId))
+		{
+			Response.Cookies.Delete("buyerId");
+			return null;
+		}
 
-        return await basketService.GetBasketAsync(buyerId);
-    }
+		return await basketService.GetBasketAsync(buyerId);
+	}
 
 
 }

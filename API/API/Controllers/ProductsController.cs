@@ -14,110 +14,119 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
+[ApiController]
+[Route("api/[controller]")]
+//[HasPermission(Permissions.ProductAccess)]
 public class ProductsController(IProductService productService, IImageService imageService,
-    IMapper mapper, IStringLocalizer<Resource> localizer) : BaseController
+	IMapper mapper, IStringLocalizer<Resource> localizer) : ControllerBase
 {
-    #region GET
+	#region GET
 
-    [HttpGet]
-    [ProducesResponseType(typeof(PagedList<Product>), 200)]
-    public async Task<ActionResult<PagedList<Product>>> GetProducts([FromQuery] ProductParams productParams)
-    {
-        var products = await productService.GetProductsFromQueryAsync(productParams);
-
-        Response.AddPaginationHeader(products.MetaData);
-        return products;
-    }
-
-    [HttpGet("{id}", Name = "GetProduct")]
-    [ProducesResponseType(typeof(Product), 200)]
-    public async Task<ActionResult<Product>> GetProduct(long id)
+	[HttpGet]
+	[Route("GetProducts", Name = "GetProducts")]
+	[ProducesResponseType(typeof(PagedList<Product>), 200)]
+	public async Task<ActionResult<PagedList<Product>>> GetProductsAsync([FromQuery] ProductParams productParams)
 	{
-        var product = await productService.GetProductAsync(id);
-        return product == null ? NotFound() : product;
-    }
+		var products = await productService.GetProductsFromQueryAsync(productParams);
 
-    [HttpGet("filters")]
-    [ProducesResponseType(typeof(ProductFiltersDto), 200)]
-    public async Task<IActionResult> GetFilters()
-    {
-        var filters = await productService.GetProductFiltersAsync();
-        return Ok(filters);
-    }
+		Response.AddPaginationHeader(products.MetaData);
+		return products;
+	}
 
-    #endregion
+	[HttpGet]
+	[Route("{id}", Name = "GetProduct")]
+	[ProducesResponseType(typeof(Product), 200)]
+	public async Task<ActionResult<Product>> GetProductAsync(long id)
+	{
+		var product = await productService.GetProductAsync(id);
+		return product == null ? NotFound() : product;
+	}
 
-    #region Upsert
+	[HttpGet]
+	[Route("filters", Name = "GetFilters")]
+	[ProducesResponseType(typeof(ProductFiltersDto), 200)]
+	public async Task<IActionResult> GetFiltersAsync()
+	{
+		var filters = await productService.GetProductFiltersAsync();
+		return Ok(filters);
+	}
 
-    [Authorize(Roles = "Admin")]
-    [HttpPost]
-    public async Task<ActionResult<Product>> CreateProduct([FromForm] CreateProductDto productDto)
-    {
-        var product = mapper.Map<Product>(productDto);
+	#endregion
 
-        if (productDto.File != null)
-        {
-            var imageResult = await imageService.AddImageAsync(productDto.File);
-            if (imageResult.Error != null)
-                return BadRequest(new ProblemDetails { Title = imageResult.Error.Message });
+	#region Upsert
 
-            product.PictureUrl = imageResult.SecureUrl.ToString();
-            product.PublicId = imageResult.PublicId;
+	[HttpPost]
+	[Route("CreateProduct", Name = "CreateProduct")]
+	[Authorize(Roles = "Admin")]
+	public async Task<ActionResult<Product>> CreateProductAsync([FromForm] CreateProductDto productDto)
+	{
+		var product = mapper.Map<Product>(productDto);
 
-        }
+		if (productDto.File != null)
+		{
+			var imageResult = await imageService.AddImageAsync(productDto.File);
+			if (imageResult.Error != null)
+				return BadRequest(new ProblemDetails { Title = imageResult.Error.Message });
 
-        var result = await productService.AddProductAsync(product);
-        if (result) return CreatedAtRoute("GetProduct", new { product.Id }, product);
+			product.PictureUrl = imageResult.SecureUrl.ToString();
+			product.PublicId = imageResult.PublicId;
 
-        return BadRequest(new ProblemDetails { Title = localizer["Product_ProblemCreate"] });
-    }
+		}
 
-    [Authorize(Roles = "Admin")]
-    [HttpPut]
-    [ProducesResponseType(typeof(Product), 200)]
-    public async Task<ActionResult<Product>> UpdateProduct([FromForm] UpdateProductDto productDto)
-    {
-        var product = await productService.GetProductAsync(productDto.Id);
-        if (product == null) return NotFound();
+		var result = await productService.AddProductAsync(product);
+		if (result) return CreatedAtRoute("GetProduct", new { product.Id }, product);
 
-        mapper.Map(productDto, product);
-        if (productDto.File != null)
-        {
-            var imageResult = await imageService.AddImageAsync(productDto.File);
-            if (imageResult.Error != null)
-                return BadRequest(new ProblemDetails { Title = imageResult.Error.Message });
+		return BadRequest(new ProblemDetails { Title = localizer["Product_ProblemCreate"] });
+	}
 
-            if (!string.IsNullOrEmpty(product.PublicId))
-                await imageService.DeleteImageAsync(product.PublicId);
+	[HttpPut]
+	[Route("UpdateProduct", Name = "UpdateProduct")]
+	[Authorize(Roles = "Admin")]
+	[ProducesResponseType(typeof(Product), 200)]
+	public async Task<ActionResult<Product>> UpdateProductAsync([FromForm] UpdateProductDto productDto)
+	{
+		var product = await productService.GetProductAsync(productDto.Id);
+		if (product == null) return NotFound();
 
-            product.PictureUrl = imageResult.SecureUrl.ToString();
-            product.PublicId = imageResult.PublicId;
-        }
+		mapper.Map(productDto, product);
+		if (productDto.File != null)
+		{
+			var imageResult = await imageService.AddImageAsync(productDto.File);
+			if (imageResult.Error != null)
+				return BadRequest(new ProblemDetails { Title = imageResult.Error.Message });
 
-        var result = await productService.UpdateProductAsync(product);
-        if (result) return Ok(product);
+			if (!string.IsNullOrEmpty(product.PublicId))
+				await imageService.DeleteImageAsync(product.PublicId);
 
-        return BadRequest(new ProblemDetails { Title = localizer["Product_ProblemUpdate"] });
-    }
+			product.PictureUrl = imageResult.SecureUrl.ToString();
+			product.PublicId = imageResult.PublicId;
+		}
 
-    [Authorize(Roles = "Admin")]
-    [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteProduct(long id)
-    {
-        var product = await productService.GetProductAsync(id);
-        if (product == null) return NotFound();
+		var result = await productService.UpdateProductAsync(product);
+		if (result) return Ok(product);
 
-        //TODO:
-        //log somewhere if fail
-        //service to check reasons and delete from cloudinary
-        if (!string.IsNullOrEmpty(product.PublicId))
-            await imageService.DeleteImageAsync(product.PublicId);
+		return BadRequest(new ProblemDetails { Title = localizer["Product_ProblemUpdate"] });
+	}
 
-        var result = await productService.DeleteProductAsync(product.Id);
-        if (result) return Ok();
+	[HttpDelete]
+	[Route("{id}", Name = "DeleteProduct")]
+	[Authorize(Roles = "Admin")]
+	public async Task<ActionResult> DeleteProductAsync(long id)
+	{
+		var product = await productService.GetProductAsync(id);
+		if (product == null) return NotFound();
 
-        return BadRequest(new ProblemDetails { Title = localizer["Product_ProblemDelete"] });
-    }
+		//TODO:
+		//log somewhere if fail
+		//service to check reasons and delete from cloudinary
+		if (!string.IsNullOrEmpty(product.PublicId))
+			await imageService.DeleteImageAsync(product.PublicId);
 
-    #endregion
+		var result = await productService.DeleteProductAsync(product.Id);
+		if (result) return Ok();
+
+		return BadRequest(new ProblemDetails { Title = localizer["Product_ProblemDelete"] });
+	}
+
+	#endregion
 }

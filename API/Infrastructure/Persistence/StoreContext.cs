@@ -7,12 +7,13 @@ using Domain.Entities.User;
 using Domain.Shared.Configurations;
 using Domain.Shared.Constants;
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 //[DbContext(typeof(StoreContext))]
-public class StoreContext(DbContextOptions options, IOptionsMonitor<ConnectionSettings> connetionSettings) 
+public class StoreContext(DbContextOptions options, IOptionsMonitor<ConnectionSettings> connetionSettings)
 	: IdentityDbContext<User, Role, Guid>(options)
 {
 
@@ -29,16 +30,24 @@ public class StoreContext(DbContextOptions options, IOptionsMonitor<ConnectionSe
 	#region User
 
 	public DbSet<Address> Addresses { get; set; }
+	public DbSet<Permission> Permissions { get; set; }
 	public override DbSet<Role> Roles { get; set; }
+	public DbSet<RolePermission> RolePermissions { get; set; }
 	public override DbSet<User> Users { get; set; }
 
 	#endregion
 
-#pragma warning disable 612, 618
-
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
-		builder.HasDefaultSchema(Constants.DbSchemaNameUser);
+		builder.HasDefaultSchema(DbConstants.DbSchemaNameUser);
+
+		builder.Entity<IdentityUser>().ToTable(nameof(User));
+		builder.Entity<IdentityRole>().ToTable(nameof(Role));
+
+		builder.Entity<Role>()
+			.HasMany(x => x.Permissions)
+			.WithMany(x => x.Roles)
+			.UsingEntity<RolePermission>();
 
 		base.OnModelCreating(builder);
 	}
@@ -48,13 +57,10 @@ public class StoreContext(DbContextOptions options, IOptionsMonitor<ConnectionSe
 		optionsBuilder.UseSqlServer(connetionSettings.CurrentValue.StoreContext,
 			x =>
 			{
-				x.MigrationsHistoryTable("MigrationsHistory", Constants.DbSchemaNameApp);
+				x.MigrationsHistoryTable("MigrationsHistory", DbConstants.DbSchemaNameApp);
 				//x.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery);
 			}).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 
 		base.OnConfiguring(optionsBuilder);
 	}
-
-#pragma warning restore 612, 618
-
 }

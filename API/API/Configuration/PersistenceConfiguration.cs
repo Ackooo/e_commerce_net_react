@@ -23,5 +23,4 @@ public static class PersistenceConfiguration
 		//}).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
 		//);
 	}	
-
 }

@@ -1,7 +1,8 @@
 ﻿namespace API.Middleware;
 
-using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+
+using Microsoft.AspNetCore.Mvc;
 
 public class ExceptionMiddleware
 {
@@ -24,6 +25,7 @@ public class ExceptionMiddleware
         }
         catch (Exception ex)
         {
+            //TODO: review return messages logic
             _logger.LogError(ex, ex.Message);
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = 500;

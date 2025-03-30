@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 [Table(nameof(Product), Schema = "Store")]
-//[Index(Name = "", )]
+//TODO: add with client
+//[Index(nameof(Name), nameof(Brand), IsUnique = true, Name = $"UX_{nameof(Product)}_{nameof(Name)}_{nameof(Brand)}")]
 public class Product
 {
 	[Column]
@@ -14,7 +15,7 @@ public class Product
 
 	[Column]
 	[Required]
-	[MaxLength(256)]
+	[MaxLength(256)]	
 	public required string Name { get; set; }
 
 	[Column]

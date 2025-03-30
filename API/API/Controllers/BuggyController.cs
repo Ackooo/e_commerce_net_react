@@ -5,7 +5,9 @@ using Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
-public class BuggyController(IStringLocalizer<Resource> localizer) : BaseController
+[ApiController]
+[Route("api/[controller]")]
+public class BuggyController(IStringLocalizer<Resource> localizer) : ControllerBase
 {
 	[HttpGet("not-found")]
     public ActionResult GetNotFound()

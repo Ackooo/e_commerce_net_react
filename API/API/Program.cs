@@ -5,6 +5,12 @@ using API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseDefaultServiceProvider((context, options) =>
+{
+	options.ValidateScopes = true;
+	options.ValidateOnBuild = true;
+});
+
 var configuration = SettingsConfiguration.AddConfiguration(args);
 
 builder.Services.AddAppConfiguration(configuration);
@@ -23,7 +29,7 @@ builder.Services.AddCors();
 
 builder.Services.AddIdentityConfiguration();
 
-builder.Services.AddAuthenticationConfiguration(configuration);
+builder.Services.AddAuthorizationConfiguration(configuration);
 
 builder.Services.AddLocalizationConfiguration();
 
@@ -56,8 +62,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseLocalizationConfiguration();
-
-app.EnsureInitialDbConfig();
 
 await app.RunAsync();
 

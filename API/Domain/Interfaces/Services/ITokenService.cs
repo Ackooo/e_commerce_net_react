@@ -6,5 +6,5 @@ using Domain.Entities.User;
 
 public interface ITokenService
 {
-    Task<string> GenerateToken(User user);
+    Task<string> GenerateTokenAsync(User user);
 }
