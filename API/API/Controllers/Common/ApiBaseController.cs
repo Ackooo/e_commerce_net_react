@@ -12,7 +12,7 @@ public class ApiBaseController : ControllerBase
 
 	public User? CurrentUser { get; set; }
 
-	public Guid? UserId { get; set; } = Guid.Empty;
+	public Guid? CurrentUserId { get; set; } = Guid.Empty;
 
 	public CultureInfo CultureInfo { get; set; } = new CultureInfo(CultureInfos.English_US);
 

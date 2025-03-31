@@ -8,13 +8,10 @@ using Domain.Shared.Configurations;
 using Domain.Shared.Constants;
 
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-//[DbContext(typeof(StoreContext))]
 public class StoreContext(DbContextOptions options, IOptionsMonitor<ConnectionSettings> connetionSettings)
-	//: IdentityDbContext<User, Role, Guid>(options)	
 	: DbContext(options)
 {
 
@@ -40,7 +37,7 @@ public class StoreContext(DbContextOptions options, IOptionsMonitor<ConnectionSe
 
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
-		base.OnModelCreating(builder);		
+		base.OnModelCreating(builder);
 
 		builder.Ignore<IdentityUserToken<Guid>>();
 		builder.Ignore<IdentityUserRole<Guid>>();
@@ -49,7 +46,7 @@ public class StoreContext(DbContextOptions options, IOptionsMonitor<ConnectionSe
 		builder.Ignore<IdentityRoleClaim<Guid>>();
 
 		builder.Entity<User>(x =>
-		{			
+		{
 			x.Ignore(c => c.LockoutEnabled);
 			x.Ignore(c => c.TwoFactorEnabled);
 			x.Ignore(c => c.LockoutEnd);

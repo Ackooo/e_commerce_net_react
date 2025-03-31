@@ -97,6 +97,15 @@ namespace Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid registration parameters..
+        /// </summary>
+        public static string Login_InvalidCreds {
+            get {
+                return ResourceManager.GetString("Login_InvalidCreds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Problem creating order..
         /// </summary>
         public static string Order_ProblemCreate {

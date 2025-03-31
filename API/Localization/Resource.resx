@@ -126,6 +126,9 @@
   <data name="Basket_ProblemSave" xml:space="preserve">
     <value>Problem saving item to basket</value>
   </data>
+  <data name="Login_InvalidCreds" xml:space="preserve">
+    <value>Invalid registration parameters.</value>
+  </data>
   <data name="Order_ProblemCreate" xml:space="preserve">
     <value>Problem creating order.</value>
   </data>

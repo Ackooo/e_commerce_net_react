@@ -5,9 +5,6 @@ using API.Middleware;
 
 using Domain.DTOs.Order;
 using Domain.Interfaces.Services;
-using Domain.Shared.Enums;
-
-using Infrastructure.Authentication;
 
 using Localization;
 
@@ -19,7 +16,8 @@ using Microsoft.Extensions.Localization;
 [Route("api/[controller]")]
 [Authorize]
 [ApiBase(Order = 1)]
-public class OrdersController(IOrderService orderService, IStringLocalizer<Resource> localizer) : ApiBaseController
+public class OrdersController(IOrderService orderService, IStringLocalizer<Resource> localizer) 
+	: ApiBaseController
 {
 	#region GET
 

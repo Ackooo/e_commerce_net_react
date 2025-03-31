@@ -6,15 +6,45 @@ using Domain.RequestHelpers;
 
 public interface IProductRepository
 {
-    Task<Product?> GetProductAsync(long id);
+    /// <summary>
+    /// Get product from database
+    /// </summary>
+    /// <param name="id">Product Id</param>
+    /// <param name="isTracked"> Determines whether a query is tracking </param>
+    /// <returns>The product if found, otherwise null</returns>
+    Task<Product?> GetProductAsync(long id, bool isTracked = false);
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="productParams"></param>
+    /// <returns></returns>
     IQueryable<Product> GetProductQuery(ProductParams productParams);
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns>All brands and types of existing products</returns>
     Task<ProductFiltersDto> GetProductFiltersAsync();
 
+    /// <summary>
+    /// Adds product to database
+    /// </summary>
+    /// <param name="product">Product to add</param>
+    /// <returns>True if the operation was successful</returns>
     Task<bool> AddProductAsync(Product product);
 
-    Task<bool> UpdateProductAsync(Product product);
+    /// <summary>
+    /// Updates tracked product in database
+    /// </summary>
+    /// <param name="existingProduct">Tracked product to update</param>
+    /// <returns>True if the operation was successful</returns>
+    Task<bool> UpdateProductAsync(Product existingProduct);
 
-    Task<bool> DeleteProductAsync(long id);
+    /// <summary>
+    /// Removes product from database
+    /// </summary>
+    /// <param name="id">Product id</param>
+    /// <returns>Deleted product's PublicId if exists</returns>
+    Task<string?> DeleteProductAsync(long id);
 }

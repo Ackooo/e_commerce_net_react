@@ -28,7 +28,7 @@ public class ApiBaseAttribute : ActionFilterAttribute
 
 		if (context.Controller is not ApiBaseController controller) return;
 
-		controller.UserId = userId;
+		controller.CurrentUserId = userId;
 
 		//TODO: review with permissions refactor
 		/*
