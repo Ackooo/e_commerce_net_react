@@ -11,7 +11,7 @@ public static class OrderExtensions
             .Select(order => new OrderDto
             {
                 Id = order.Id,
-                BuyerId = order.BuyerId,
+                BuyerId = order.UserId,
                 OrderDate = order.OrderDate,
                 ShippingAddress = order.ShippingAddress,
                 DeliveryFee = order.DeliveryFee,

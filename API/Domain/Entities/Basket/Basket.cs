@@ -8,32 +8,31 @@ using System.ComponentModel.DataAnnotations.Schema;
 public class Basket
 {
 
-	[Column]
-	[Key]
-	[DefaultValue("NEWSEQUENTIALID()")]
-	public Guid Id { get; set; } = Guid.CreateVersion7();
+    [Column]
+    [Key]
+    [DefaultValue("NEWSEQUENTIALID()")]
+    public Guid Id { get; set; } = Guid.CreateVersion7();
 
-	[Column]
-	[Required]
-	[MaxLength(256)]
-	public required string BuyerId { get; set; }
+    [Column]
+    [Required]
+    public required Guid UserId { get; set; }
 
-	#region Stripe
+    #region Stripe
 
-	[Column]
-	[MaxLength(256)]
-	public string? PaymentIntentId { get; set; }
+    [Column]
+    [MaxLength(256)]
+    public string? PaymentIntentId { get; set; }
 
-	[Column]
-	[MaxLength(256)]
-	public string? ClientSecret { get; set; }
+    [Column]
+    [MaxLength(256)]
+    public string? ClientSecret { get; set; }
 
-	#endregion
+    #endregion
 
-	#region NavigationProperies
+    #region NavigationProperies
 
-	public ICollection<BasketItem> BasketItems { get; set; } = [];
+    public ICollection<BasketItem> BasketItems { get; set; } = [];
 
-	#endregion
+    #endregion
 
 }

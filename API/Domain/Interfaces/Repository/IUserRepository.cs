@@ -4,5 +4,11 @@ using Domain.DTOs.Order;
 
 public interface IUserRepository
 {
-    Task<bool> AddUsersAddressAsync(string buyerId, CreateOrderDto orderDto);
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="orderDto"></param>
+    /// <returns></returns>
+    Task<bool> AddUsersAddressAsync(Guid userId, CreateOrderDto orderDto);
 }

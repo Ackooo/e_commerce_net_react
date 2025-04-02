@@ -19,37 +19,36 @@ using Microsoft.Extensions.Localization;
 public class OrdersController(IOrderService orderService, IStringLocalizer<Resource> localizer) 
 	: ApiBaseController
 {
-	#region GET
+    #region GET
 
-	[HttpGet]
-	[Route("GetOrders", Name = "GetOrders")]
-	[ProducesResponseType(typeof(List<OrderDto>), 200)]
-	public async Task<ActionResult<List<OrderDto>>> GetOrdersAsync()
-	{
-		return await orderService.GetByBuyerIdAsync(User.Identity.Name);
-	}
+    [HttpGet]
+    [Route("GetOrders", Name = "GetOrders")]
+    [ProducesResponseType(typeof(List<OrderDto>), 200)]
+    public async Task<ActionResult<List<OrderDto>>> GetOrdersAsync()
+    {
+        return await orderService.GetByBuyerIdAsync(CurrentUserId!.Value);
+    }
 
-	[HttpGet]
-	[Route("{id}", Name = "GetOrder")]
-	[ProducesResponseType(typeof(OrderDto), 200)]
+    [HttpGet]
+    [Route("{id}", Name = "GetOrder")]
+    [ProducesResponseType(typeof(OrderDto), 200)]
+    public async Task<ActionResult<OrderDto>> GetOrderAsync(Guid id)
+    {
+        return await orderService.GetByIdAsync(id, CurrentUserId!.Value);
+    }
 
-	public async Task<ActionResult<OrderDto>> GetOrderAsync(Guid id)
-	{
-		return await orderService.GetByIdAsync(id, User.Identity.Name);
-	}
+    #endregion
 
-	#endregion
+    #region POST
 
-	#region POST
-
-	[HttpPost]
+    [HttpPost]
 	[Route("", Name = "CreateOrder")]
 	//	[HasPermission(Permissions.OrderModify)]
 	public async Task<ActionResult<Guid>> CreateOrderAsync(CreateOrderDto orderDto)
 	{
 		try
 		{
-			var result = await orderService.CreateOrder(User.Identity.Name, orderDto);
+            var result = await orderService.CreateOrder(CurrentUserId!.Value, orderDto);
 			if (result != Guid.Empty)
 				return CreatedAtRoute("GetOrder", new { id = result }, result);
 			return BadRequest(localizer["Order_ProblemCreate"]);

@@ -42,7 +42,8 @@ public class Order
 	[Column]
 	[Required]
 	[MaxLength(256)]
-	public required string BuyerId { get; set; }
+	[ForeignKey(nameof(User))]
+	public required Guid UserId { get; set; }
 
 	[Column]
 	[MaxLength(256)]
@@ -51,6 +52,8 @@ public class Order
 	#region NavigationProperies
 
 	public required Address ShippingAddress { get; set; }
+
+	public User User { get; set; }
 
 	public required List<OrderItem> OrderItems { get; set; }
 

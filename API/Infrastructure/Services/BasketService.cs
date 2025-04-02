@@ -7,34 +7,34 @@ using Domain.Interfaces.Services;
 
 public class BasketService(IBasketRepository basketRepository) : IBasketService
 {
-	public Task<Basket?> GetBasketAsync(string? buyerId)
-	{
-		if (string.IsNullOrWhiteSpace(buyerId)) return Task.FromResult<Basket?>(null);
-		return basketRepository.GetBasketAsync(buyerId);
-	}
+    public Task<Basket?> GetBasketAsync(Guid userId, bool isTracked = false)
+    {
+        if(userId == Guid.Empty) return Task.FromResult<Basket?>(null);
+        return basketRepository.GetBasketAsync(userId, isTracked);
+    }
 
-	public async Task<Basket> AddBasketAsync(Basket basket)
-	{
-		return await basketRepository.AddBasketAsync(basket);
-	}
+    public async Task<Basket> AddBasketAsync(Basket basket)
+    {
+        return await basketRepository.AddBasketAsync(basket);
+    }
 
-	public async Task<bool> UpdateBasketAsync(Basket basket)
-	{
-		return await basketRepository.UpdateBasketAsync(basket);
-	}
+    public async Task<bool> UpdateBasketAsync(Basket existingBasket)
+    {
+        return await basketRepository.UpdateBasketAsync(existingBasket);
+    }
 
-	public async Task<bool> AddItemAsync(Basket basket, Product product, int quantity)
-	{
-		return await basketRepository.AddItemAsync(basket, product, quantity);
-	}
+    public async Task<bool> AddItemAsync(Basket existingBasket, Product existingProduct, int quantity)
+    {
+        return await basketRepository.AddItemAsync(existingBasket, existingProduct, quantity);
+    }
 
-	public async Task<bool> DeleteBasketAsync(Guid id)
-	{
-		return await basketRepository.DeleteBasketAsync(id);
-	}
+    public async Task<bool> DeleteBasketAsync(Guid id)
+    {
+        return await basketRepository.DeleteBasketAsync(id);
+    }
 
-	public async Task<bool> RemoveItemAsync(Basket basket, long productId, int quantity)
-	{
-		return await basketRepository.RemoveItemAsync(basket, productId, quantity);
-	}
+    public async Task<bool> RemoveItemAsync(Basket existingBasket, long productId, int quantity)
+    {
+        return await basketRepository.RemoveItemAsync(existingBasket, productId, quantity);
+    }
 }

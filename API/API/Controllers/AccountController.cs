@@ -40,14 +40,14 @@ public class AccountController(UserManager<User> userManager, ITokenService toke
             return Unauthorized();
         }
 
-        var userBasket = await RetrieveBasket(loginDto.Username);
-        var anonBasket = await RetrieveBasket(Request.Cookies["buyerId"]);
+        var userBasket = await basketService.GetBasketAsync(user.Id);
+        var anonBasket = await RetrieveBasket(Request.Cookies[RequestConstants.CookiesBasketUserId]);
 
         if(anonBasket != null)
         {
             if(userBasket != null) await basketService.DeleteBasketAsync(userBasket.Id);
-            anonBasket.BuyerId = user.UserName;
-            Response.Cookies.Delete("buyerId");
+            anonBasket.UserId = user.Id;
+            Response.Cookies.Delete(RequestConstants.CookiesBasketUserId);
         }
 
         return new UserDto
@@ -93,12 +93,13 @@ public class AccountController(UserManager<User> userManager, ITokenService toke
     [ProducesResponseType(typeof(UserDto), 200)]
     public async Task<ActionResult<UserDto>> GetCurrentUserAsync()
     {
-        var user = await userManager.FindByNameAsync(User.Identity.Name);
-        var userBasket = await RetrieveBasket(User.Identity.Name);
+        ArgumentNullException.ThrowIfNull(CurrentUserId);
+        var user = await userManager.FindByIdAsync(CurrentUserId.ToString());
+        var userBasket = await basketService.GetBasketAsync(user.Id);
 
         return new UserDto
         {
-            Email = user.Email,
+            Email = user.Email!,
             Token = await tokenService.GenerateTokenAsync(user),
             Basket = userBasket?.MapBasketToDto()
         };
@@ -129,16 +130,17 @@ public class AccountController(UserManager<User> userManager, ITokenService toke
         return true;
     }
 
-    //Copied from the basket controller
     private async Task<Basket?> RetrieveBasket(string buyerId)
     {
-        if(string.IsNullOrEmpty(buyerId))
+        if(string.IsNullOrWhiteSpace(buyerId))
         {
-            Response.Cookies.Delete("buyerId");
+            Response.Cookies.Delete(RequestConstants.CookiesBasketUserId);
             return null;
         }
 
-        return await basketService.GetBasketAsync(buyerId);
+        return !Guid.TryParse(buyerId, out var userId)
+            ? null
+            : await basketService.GetBasketAsync(userId);
     }
 
     #endregion

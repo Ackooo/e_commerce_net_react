@@ -33,7 +33,8 @@ public class PaymentsController(IPaymentService paymentService, IBasketService b
 	[ProducesResponseType(typeof(OrderDto), 200)]
 	public async Task<ActionResult<BasketDto>> CreateOrUpdatePaymentIntentAsync()
 	{
-		var basket = await basketService.GetBasketAsync(User.Identity.Name);
+		ArgumentNullException.ThrowIfNull(CurrentUserId);
+		var basket = await basketService.GetBasketAsync(CurrentUserId.Value, true);
 		if (basket == null) return NotFound();
 
 		var intent = await paymentService.CreateOrUpdatePaymentIntent(basket);

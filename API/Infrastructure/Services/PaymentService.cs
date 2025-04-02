@@ -26,7 +26,7 @@ public class PaymentService(IOptionsMonitor<StripeSettings> stripeSettings) : IP
             {
                 Amount = subtotal + deliveryFee,
                 Currency = "usd",
-                PaymentMethodTypes = new List<string> { "card" }
+                PaymentMethodTypes = ["card"]
             };
             intent = await service.CreateAsync(options);
         }

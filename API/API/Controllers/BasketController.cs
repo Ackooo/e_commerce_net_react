@@ -9,7 +9,7 @@ using Domain.DTOs.Basket;
 using Domain.Entities.Basket;
 using Domain.Extensions;
 using Domain.Interfaces.Services;
-
+using Domain.Shared.Constants;
 using Localization;
 
 using Microsoft.AspNetCore.Authorization;
@@ -22,96 +22,113 @@ using Microsoft.Extensions.Localization;
 //[HasPermission(Permissions.BasketAccess)]
 [ApiBase(Order = 1)]
 public class BasketController(IBasketService basketService, IProductService productService,
-	IStringLocalizer<Resource> localizer) : ApiBaseController
+    IStringLocalizer<Resource> localizer) : ApiBaseController
 {
-	#region GET
+    #region GET
 
-	[HttpGet]
-	[Route("Basket", Name = "GetBasket")]
-	[AllowAnonymous]
-	[ProducesResponseType(typeof(BasketDto), 200)]
-	public async Task<ActionResult<BasketDto>> GetBasketAsync()
-	{
-		var buyerId = GetBuyerId();
-		if (string.IsNullOrWhiteSpace(buyerId)) return NotFound();
+    [HttpGet]
+    [Route("Basket", Name = "GetBasket")]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(BasketDto), 200)]
+    public async Task<ActionResult<BasketDto>> GetBasketAsync()
+    {
+        var buyerId = GetBuyerId();
+        if(!buyerId.HasValue) return NotFound();
 
-		var basket = await basketService.GetBasketAsync(buyerId);
-		if (basket == null) return NotFound();
+        var basket = await basketService.GetBasketAsync(buyerId.Value);
+        if(basket == null) return NotFound();
 
-		return basket.MapBasketToDto();
-	}
+        return basket.MapBasketToDto();
+    }
 
-	#endregion
+    #endregion
 
-	#region POST
+    #region POST
 
-	[HttpPost]
-	[Route("AddItem", Name = "AddItemToBasket")]
-	[AllowAnonymous]
-	[ProducesResponseType(typeof(BasketDto), 200)]
-	public async Task<ActionResult<BasketDto>> AddItemToBasketAsync(long productId, int quantity)
-	{
-		var buyerId = GetBuyerId();
-		var basket = await basketService.GetBasketAsync(buyerId);
+    [HttpPost]
+    [Route("AddItem", Name = "AddItemToBasket")]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(BasketDto), 200)]
+    public async Task<ActionResult<BasketDto>> AddItemToBasketAsync(long productId, int quantity)
+    {
+        var buyerId = GetBuyerId();
+        Basket basket;
+        if(!buyerId.HasValue)
+        {
+            basket = await CreateBasket();
+        }
+        else
+        {
+            var existingBasket = await basketService.GetBasketAsync(buyerId.Value, true);
+            basket = existingBasket ?? await CreateBasket();
+        }
 
-		if (basket == null) basket = await CreateBasket();
+        var product = await productService.GetProductAsync(productId, true);
+        if(product == null) return BadRequest(new ProblemDetails { Title = localizer["Product_NotFound"] });
 
-		var product = await productService.GetProductAsync(productId);
-		if (product == null) return BadRequest(new ProblemDetails { Title = localizer["Product_NotFound"] });
+        var result = await basketService.AddItemAsync(basket, product, quantity);
+        if(result) return CreatedAtRoute("GetBasket", basket.MapBasketToDto());
 
-		var result = await basketService.AddItemAsync(basket, product, quantity);
-		if (result) return CreatedAtRoute("GetBasket", basket.MapBasketToDto());
+        return BadRequest(new ProblemDetails { Title = localizer["Basket_ProblemSave"] });
+    }
 
-		return BadRequest(new ProblemDetails { Title = localizer["Basket_ProblemSave"] });
-	}
+    #endregion
 
-	#endregion
+    #region DELETE
 
-	#region DELETE
+    [HttpDelete]
+    [Route("RemoveItem", Name = "RemoveBasketItem")]
+    [AllowAnonymous]
+    public async Task<ActionResult> RemoveBasketItemAsync(long productId, int quantity)
+    {
+        var buyerId = GetBuyerId();
+        if(!buyerId.HasValue) return NotFound();
 
-	[HttpDelete]
-	[Route("RemoveItem", Name = "RemoveBasketItem")]
-	[AllowAnonymous]
-	public async Task<ActionResult> RemoveBasketItemAsync(long productId, int quantity)
-	{
-		var buyerId = GetBuyerId();
-		var basket = await basketService.GetBasketAsync(buyerId);
-		if (basket == null) return NotFound();
+        var basket = await basketService.GetBasketAsync(buyerId.Value, true);
+        if(basket == null) return NotFound();
 
-		var result = await basketService.RemoveItemAsync(basket, productId, quantity);
-		if (result) return Ok();
+        var result = await basketService.RemoveItemAsync(basket, productId, quantity);
+        if(result) return Ok();
 
-		return BadRequest(new ProblemDetails { Title = localizer["Basket_ProblemRemove"] });
-	}
+        return BadRequest(new ProblemDetails { Title = localizer["Basket_ProblemRemove"] });
+    }
 
-	#endregion
+    #endregion
 
-	#region Helper
+    #region Helper
 
-	private string? GetBuyerId()
-	{
-		var buyerId = User.Identity?.Name ?? Request.Cookies["buyerId"];
-		if (string.IsNullOrEmpty(buyerId))
-		{
-			Response.Cookies.Delete("buyerId");
-		}
-		return buyerId;
-	}
+    private Guid? GetBuyerId()
+    {
+        if(CurrentUserId.HasValue && CurrentUserId != Guid.Empty) return CurrentUserId;
 
-	private async Task<Basket> CreateBasket()
-	{
-		var buyerId = User.Identity?.Name;
-		if (string.IsNullOrEmpty(buyerId))
-		{
-			buyerId = Guid.NewGuid().ToString();
-			var cookieOptions = new CookieOptions
-			{ IsEssential = true, Expires = DateTime.Now.AddDays(30), HttpOnly = false };
-			Response.Cookies.Append("buyerId", buyerId, cookieOptions);
-		}
+        var buyerId = Request.Cookies[RequestConstants.CookiesBasketUserId];
+        if(string.IsNullOrWhiteSpace(buyerId))
+        {
+            Response.Cookies.Delete(RequestConstants.CookiesBasketUserId);
+            return null;
+        }
 
-		var basket = new Basket { BuyerId = buyerId };
-		return await basketService.AddBasketAsync(basket);//start to track
-	}
+        return !Guid.TryParse(buyerId, out var userId) ? null : userId;
+    }
 
-	#endregion
+    private async Task<Basket> CreateBasket()
+    {
+        var buyerId = CurrentUserId;
+        if(!buyerId.HasValue || buyerId == Guid.Empty)
+        {
+            buyerId = Guid.CreateVersion7();
+            var cookieOptions = new CookieOptions
+            {
+                IsEssential = true,
+                Expires = DateTime.Now.AddDays(30),
+                HttpOnly = false
+            };
+            Response.Cookies.Append(RequestConstants.CookiesBasketUserId, buyerId.Value.ToString(), cookieOptions);
+        }
+
+        var basket = new Basket { UserId = buyerId.Value };
+        return await basketService.AddBasketAsync(basket);//start to track
+    }
+
+    #endregion
 }

@@ -6,23 +6,25 @@ using Domain.Shared.Enums;
 
 using Microsoft.EntityFrameworkCore;
 
-using Stripe;
-
 public class OrderRepository(StoreContext storeContext) : IOrderRepository
 {
-	public Task<Order> GetByIdAsync(Guid id, string buyerId)
+	public Task<Order> GetByIdAsync(Guid id, Guid userId, bool isTracked = false)
 	{
-		return storeContext.Orders.AsNoTracking()
+		var query = isTracked
+			? storeContext.Orders.AsTracking()
+			: storeContext.Orders.AsNoTracking();
+
+		return query
 			.Include(o => o.OrderItems)
-			.Where(x => x.BuyerId == buyerId && x.Id == id)
+			.Where(x => x.UserId == userId && x.Id == id)
 			.FirstAsync();
 	}
 
-	public Task<List<Order>> GetByBuyerIdAsync(string buyerId)
+	public Task<List<Order>> GetByBuyerIdAsync(Guid userId)
 	{
 		return storeContext.Orders.AsNoTracking()
 			.Include(o => o.OrderItems)
-			.Where(x => x.BuyerId == buyerId)
+			.Where(x => x.UserId == userId)
 			.ToListAsync();
 	}
 
@@ -37,7 +39,8 @@ public class OrderRepository(StoreContext storeContext) : IOrderRepository
 	{
 		if (chargeStatus != "succeeded") return;
 
-		var order = await storeContext.Orders.FirstAsync(x => x.PaymentIntentId == paymentIntentId);
+		var order = await storeContext.Orders.AsTracking()
+			.FirstAsync(x => x.PaymentIntentId == paymentIntentId);
 		order.OrderStatus = OrderStatus.PaymentReceived;
 		await storeContext.SaveChangesAsync();
 	}

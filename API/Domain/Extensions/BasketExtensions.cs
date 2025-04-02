@@ -2,7 +2,6 @@
 
 using Domain.DTOs.Basket;
 using Domain.Entities.Basket;
-using Microsoft.EntityFrameworkCore;
 
 public static class BasketExtensions
 {
@@ -10,8 +9,7 @@ public static class BasketExtensions
     {
         return new BasketDto
         {
-            Id = basket.Id,
-            BuyerId = basket.BuyerId,
+            Id = basket.Id,           
             PaymentItentnId = basket.PaymentIntentId,
             ClientSecret = basket.ClientSecret,
             Items = basket.BasketItems.Select(item => new BasketItemDto
