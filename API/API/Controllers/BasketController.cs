@@ -35,7 +35,7 @@ public class BasketController(IBasketService basketService, IStringLocalizer<Res
         var basket = await basketService.GetBasketAsync(buyerId.Value);
         if(basket == null) return NotFound();
 
-        return basket.MapBasketToDto();
+        return basket.MapToBasketDto();
     }
 
     #endregion

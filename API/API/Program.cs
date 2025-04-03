@@ -17,8 +17,6 @@ builder.Services.AddAppConfiguration(configuration);
 
 builder.Services.AddControllers();
 
-builder.Services.AddMappingConfiguration();
-
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerConfiguration();

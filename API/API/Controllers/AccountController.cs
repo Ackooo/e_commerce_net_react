@@ -52,7 +52,7 @@ public class AccountController(UserManager<User> userManager, ITokenService toke
         {
             Email = user.Email,
             Token = await tokenService.GenerateTokenAsync(user),
-            Basket = anonBasket != null ? anonBasket.MapBasketToDto() : userBasket?.MapBasketToDto()
+            Basket = anonBasket != null ? anonBasket.MapToBasketDto() : userBasket?.MapToBasketDto()
         };
     }
 
@@ -99,7 +99,7 @@ public class AccountController(UserManager<User> userManager, ITokenService toke
         {
             Email = user.Email!,
             Token = await tokenService.GenerateTokenAsync(user),
-            Basket = userBasket?.MapBasketToDto()
+            Basket = userBasket?.MapToBasketDto()
         };
     }
 

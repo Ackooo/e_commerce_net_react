@@ -1,28 +1,27 @@
 ﻿namespace Infrastructure.Services;
 
 using Domain.DTOs.Order;
+using Domain.Entities.Order;
+using Domain.Exceptions;
+using Domain.Extensions;
 using Domain.Interfaces.Repository;
 using Domain.Interfaces.Services;
-using Domain.Exceptions;
-
-using Microsoft.Extensions.Localization;
 using Localization;
-using Domain.Entities.Order;
-using AutoMapper;
+using Microsoft.Extensions.Localization;
 
 public class OrderService(IOrderRepository orderRepository, IBasketRepository basketRepository,
-    IUserRepository userRepository, IMapper mapper, IStringLocalizer<Resource> localizer) : IOrderService
+    IUserRepository userRepository, IStringLocalizer<Resource> localizer) : IOrderService
 {
     public async Task<OrderDto> GetByIdAsync(Guid id, Guid userId)
     {
         var order = await orderRepository.GetByIdAsync(id, userId);
-        return mapper.Map<OrderDto>(order);
+        return order.MapToOrderDto();
     }
 
     public async Task<List<OrderDto>> GetByBuyerIdAsync(Guid userId)
     {
         var orders = await orderRepository.GetByBuyerIdAsync(userId);
-        return mapper.Map<List<OrderDto>>(orders);
+        return [.. orders.Select(x => x.MapToOrderDto())];
     }
 
     public async Task<Guid> CreateOrder(Guid userId, CreateOrderDto orderDto)

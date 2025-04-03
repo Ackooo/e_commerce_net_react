@@ -1,7 +1,5 @@
 ﻿namespace API.Controllers;
 
-using AutoMapper;
-
 using Domain.DTOs.Product;
 using Domain.Entities.Product;
 using Domain.Extensions;
@@ -19,7 +17,7 @@ using Microsoft.Extensions.Localization;
 [Route("api/[controller]")]
 [ApiBase(Order = 1)]
 public class ProductsController(IProductService productService, IImageService imageService,
-    IMapper mapper, IStringLocalizer<Resource> localizer) : ApiBaseController
+    IStringLocalizer<Resource> localizer) : ApiBaseController
 {
     #region GET
 
@@ -61,7 +59,7 @@ public class ProductsController(IProductService productService, IImageService im
     [Authorize(Roles = Roles.Vendor)]
     public async Task<ActionResult<Product>> CreateProductAsync([FromForm] CreateProductDto productDto)
     {
-        var product = mapper.Map<Product>(productDto);
+        var product = productDto.MapToProduct();
 
         if(productDto.File != null)
         {
@@ -89,7 +87,7 @@ public class ProductsController(IProductService productService, IImageService im
         var product = await productService.GetProductAsync(productDto.Id, true);
         if(product == null) return NotFound();
 
-        mapper.Map(productDto, product);
+        productDto.MapToProduct(product);
         if(productDto.File != null)
         {
             var imageResult = await imageService.AddImageAsync(productDto.File);

@@ -5,11 +5,13 @@ using Domain.Entities.Basket;
 
 public static class BasketExtensions
 {
-    public static BasketDto MapBasketToDto(this Basket basket)
+    #region Mapper
+
+    public static BasketDto MapToBasketDto(this Basket basket)
     {
         return new BasketDto
         {
-            Id = basket.Id,           
+            Id = basket.Id,
             PaymentItentnId = basket.PaymentIntentId,
             ClientSecret = basket.ClientSecret,
             Items = basket.BasketItems.Select(item => new BasketItemDto
@@ -24,5 +26,7 @@ public static class BasketExtensions
             }).ToList()
         };
     }
+
+    #endregion
 
 }

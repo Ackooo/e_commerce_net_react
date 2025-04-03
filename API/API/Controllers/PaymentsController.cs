@@ -44,7 +44,7 @@ public class PaymentsController(IPaymentService paymentService, IBasketService b
 
 		if (!result) return BadRequest(new ProblemDetails { Title = "Problem updating basket with intent" });
 
-		return basket.MapBasketToDto();
+		return basket.MapToBasketDto();
 	}
 
 	[HttpPost]

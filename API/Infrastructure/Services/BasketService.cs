@@ -44,7 +44,7 @@ public class BasketService(IBasketRepository basketRepository, IProductService p
         if(product == null) return null;
 
         var result = await basketRepository.AddItemAsync(basket, product, quantity);
-        return basket.MapBasketToDto();
+        return basket.MapToBasketDto();
     }
 
     public async Task<bool> RemoveItemAsync(Basket existingBasket, long productId, int quantity)
