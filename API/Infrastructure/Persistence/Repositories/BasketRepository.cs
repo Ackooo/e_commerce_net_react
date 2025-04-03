@@ -42,13 +42,17 @@ public class BasketRepository(StoreContext storeContext) : IBasketRepository
 
         if(existingItem == null)
         {
-            existingBasket.BasketItems.Add(new BasketItem { Product = existingProduct, Quantity = quantity });
+            var newBasketItem = new BasketItem { Product = existingProduct, Quantity = quantity };
+            existingBasket.BasketItems.Add(newBasketItem);
+            storeContext.BasketItems.Add(newBasketItem);
         }
         else
         {
             existingItem.Quantity += quantity;
+            //TODO: checks for update
+            //storeContext.BasketItems.Update(existingItem);
         }
-
+        
         return await storeContext.SaveChangesAsync() > 0;
     }
 
@@ -65,6 +69,7 @@ public class BasketRepository(StoreContext storeContext) : IBasketRepository
 
         item.Quantity -= quantity;
         if(item.Quantity <= 0) existingBasket.BasketItems.Remove(item);
+        //TODO: checks for update
         return await storeContext.SaveChangesAsync() > 0;
     }
 

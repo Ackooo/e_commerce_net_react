@@ -12,7 +12,6 @@ public static class DependencyConfiguration
     {
         services.AddScoped<IBasketRepository, BasketRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
-        services.AddScoped<IPermissionRepository, PermissionRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
 
@@ -22,6 +21,7 @@ public static class DependencyConfiguration
         services.AddScoped<IPaymentService, PaymentService>();
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IUserService, UserService>();
 
     }
 }

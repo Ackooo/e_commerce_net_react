@@ -37,9 +37,13 @@ public class OrderItem
 	[MaxLength(512)]
 	public string? PictureUrl { get; set; }
 
-	#region NavigationProperies
+    #region NavigationProperies
 
-	public Order Order { get; set; }
+#pragma warning disable CS8618
 
-	#endregion
+    public Order Order { get; set; }
+
+#pragma warning restore CS8618
+
+    #endregion
 }

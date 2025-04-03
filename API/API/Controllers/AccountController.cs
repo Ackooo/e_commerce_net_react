@@ -19,8 +19,9 @@ using Microsoft.Extensions.Localization;
 [Route("api/[controller]")]
 [Authorize]
 [ApiBase(Order = 1)]
-public class AccountController(UserManager<User> userManager, ITokenService tokenService,
-    IBasketService basketService, IStringLocalizer<Resource> localizer) : ApiBaseController
+public class AccountController(UserManager<User> userManager, IUserService userService,
+    ITokenService tokenService,    IBasketService basketService, 
+    IStringLocalizer<Resource> localizer) : ApiBaseController
 {
 
     [HttpPost]
@@ -81,7 +82,7 @@ public class AccountController(UserManager<User> userManager, ITokenService toke
             return ValidationProblem();
         }
 
-        await userManager.AddToRoleAsync(user, Roles.Member);
+        await userService.AddRoleToUserAsync(user.Id, Roles.Member);
 
         return StatusCode(201);
     }

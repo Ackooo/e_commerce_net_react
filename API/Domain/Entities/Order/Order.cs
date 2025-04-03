@@ -49,19 +49,23 @@ public class Order
 	[MaxLength(256)]
 	public string? PaymentIntentId { get; set; }
 
-	#region NavigationProperies
+    #region NavigationProperies
 
-	public required Address ShippingAddress { get; set; }
+#pragma warning disable CS8618
+
+    public required Address ShippingAddress { get; set; }
 
 	public User User { get; set; }
 
 	public required List<OrderItem> OrderItems { get; set; }
 
-	#endregion
+#pragma warning restore CS8618
 
-	#region Methods
+    #endregion
 
-	public long GetTotal()
+    #region Methods
+
+    public long GetTotal()
 	{
 		return Subtotal + DeliveryFee;
 	}

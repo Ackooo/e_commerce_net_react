@@ -70,6 +70,15 @@ namespace Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Basket is empty..
+        /// </summary>
+        public static string Basket_Empty {
+            get {
+                return ResourceManager.GetString("Basket_Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not locate the basket..
         /// </summary>
         public static string Basket_ProblemLocate {

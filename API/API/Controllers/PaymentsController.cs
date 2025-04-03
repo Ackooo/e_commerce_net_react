@@ -25,7 +25,7 @@ public class PaymentsController(IPaymentService paymentService, IBasketService b
 {
 
 	[HttpPost]
-	[Route("CreateOrUpdatePaymentIntent", Name = "CreateOrUpdatePaymentIntent")]
+	[Route("", Name = "CreateOrUpdatePaymentIntent")]
 	//[HasPermission(Permissions.PaymentModify)]
 	[ProducesResponseType(typeof(OrderDto), 200)]
 	public async Task<ActionResult<BasketDto>> CreateOrUpdatePaymentIntentAsync()
@@ -34,8 +34,12 @@ public class PaymentsController(IPaymentService paymentService, IBasketService b
 		var basket = await basketService.GetBasketAsync(CurrentUserId.Value, true);
 		if (basket == null) return NotFound();
 
-		var intent = await paymentService.CreateOrUpdatePaymentIntent(basket);
-		if (intent == null) return BadRequest(new ProblemDetails { Title = "Problem creating payment intent" });
+		if(basket.BasketItems.Count == 0) 
+			return BadRequest(new ProblemDetails { Title = localizer["Basket_Empty"] });
+
+        var intent = await paymentService.CreateOrUpdatePaymentIntent(basket);
+		if (intent == null) 
+			return BadRequest(new ProblemDetails { Title = "Problem creating payment intent" });
 
 		basket.PaymentIntentId = basket.PaymentIntentId ?? intent.Id;
 		basket.ClientSecret = basket.ClientSecret ?? intent.ClientSecret;

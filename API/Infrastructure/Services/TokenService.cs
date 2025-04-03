@@ -15,8 +15,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-public class TokenService(UserManager<User> userManager, 
-	IOptionsMonitor<JwtSettings> jwtSettings, IPermissionRepository permissionRepository) : ITokenService
+public class TokenService(UserManager<User> userManager, IUserService userService,
+	IOptionsMonitor<JwtSettings> jwtSettings, IUserRepository userRepository) : ITokenService
 {
 
 	public async Task<string> GenerateTokenAsync(User user)
@@ -31,13 +31,19 @@ public class TokenService(UserManager<User> userManager,
 			new (CustomClaims.Language, user.Language.ToString())
 		};
 
-		var roles = await userManager.GetRolesAsync(user);
-		foreach (var role in roles)
+		var userInfo = await userRepository.GetUserWithPermissionsAsync(user.Id) 
+			?? throw new UnauthorizedAccessException();
+
+        foreach(var role in userInfo.Roles)
 		{
-			claims.Add(new Claim(ClaimTypes.Role, role));
+			claims.Add(new Claim(ClaimTypes.Role, role.Name!));
 		}
 
-		var permissions = await permissionRepository.GetPermissionsAsync(user.Id);
+		var permissions = userInfo.Roles
+			.SelectMany(x => x.Permissions)
+			.Select(x => x.Name)
+			.ToList();
+
 		foreach (var permission in permissions)
 		{
 			claims.Add(new(CustomClaims.Permission, permission));

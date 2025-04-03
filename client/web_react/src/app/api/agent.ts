@@ -99,8 +99,8 @@ const TestErrors = {
 
 const Basket = {
     get: () => requests.get('basket'),
-    addItem: (productId: number, quantity = 1) => requests.post(`basket?productId=${productId}&quantity=${quantity}`, {}),
-    removeItem: (productId: number, quantity = 1) => requests.delete(`basket?productId=${productId}&quantity=${quantity}`)
+    addItem: (productId: number, quantity = 1) => requests.post(`basket/additem?productId=${productId}&quantity=${quantity}`, {}),
+    removeItem: (productId: number, quantity = 1) => requests.delete(`basket/removeItem?productId=${productId}&quantity=${quantity}`)
 }
 
 const Account = {

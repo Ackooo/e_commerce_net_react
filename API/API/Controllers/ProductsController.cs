@@ -55,7 +55,7 @@ public class ProductsController(IProductService productService, IImageService im
     #region Upsert
 
     [HttpPost]
-    [Route("CreateProduct", Name = "CreateProduct")]
+    [Route("", Name = "CreateProduct")]
     [Authorize(Roles = Roles.Vendor)]
     public async Task<ActionResult<Product>> CreateProductAsync([FromForm] CreateProductDto productDto)
     {
@@ -79,7 +79,7 @@ public class ProductsController(IProductService productService, IImageService im
     }
 
     [HttpPut]
-    [Route("UpdateProduct", Name = "UpdateProduct")]
+    [Route("", Name = "UpdateProduct")]
     [Authorize(Roles = Roles.Vendor)]
     [ProducesResponseType(typeof(Product), 200)]
     public async Task<ActionResult<Product>> UpdateProductAsync([FromForm] UpdateProductDto productDto)

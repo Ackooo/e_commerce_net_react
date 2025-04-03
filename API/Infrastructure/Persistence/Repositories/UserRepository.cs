@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 public class UserRepository(StoreContext storeContext) : IUserRepository
 {
+
+    #region User
+
     public async Task<User?> GetUserWithPermissionsAsync(Guid id)
     {
         if(id == Guid.Empty) return null;
@@ -39,4 +42,60 @@ public class UserRepository(StoreContext storeContext) : IUserRepository
         storeContext.Update(user);
         return await storeContext.SaveChangesAsync() != 0;
     }
+
+    #endregion
+
+    #region Role
+
+    public Task<Role> GetRoleAsync(string name)
+    {
+        return storeContext.Roles.AsNoTracking()
+            .Where(x => x.Name == name).FirstAsync();
+    }
+
+    public Task<List<Role>> GetAvailableRolesAsync()
+    {
+        return storeContext.Roles.AsNoTracking().ToListAsync();
+    }
+
+    public Task<bool> CheckUserRoleExistenceAsync(Guid userId, Guid roleId)
+    {
+        return storeContext.UserRoles.AsNoTracking()
+            .AnyAsync(x => x.UserId == userId && x.RoleId == roleId);
+    }
+
+    public async Task<bool> AddUserRoleAsync(Guid userId, Guid roleId)
+    {
+        //FK checks in database
+        var userRole = new UserRole
+        {
+            UserId = userId,
+            RoleId = roleId
+        };
+
+        await storeContext.UserRoles.AddAsync(userRole);
+        return await storeContext.SaveChangesAsync() != 0;
+    }
+
+    #endregion
+
+    #region Permission
+
+    public async Task<HashSet<string>> GetPermissionsAsync(Guid memberId)
+    {
+        var roles = await storeContext.Set<User>()
+            .Include(x => x.Roles)
+            .ThenInclude(x => x.Permissions)
+            .Where(x => x.Id == memberId)
+            .Select(x => x.Roles)
+            .ToArrayAsync();
+
+        return roles
+            .SelectMany(x => x)
+            .SelectMany(x => x.Permissions)
+            .Select(x => x.Name)
+            .ToHashSet();
+    }
+
+    #endregion
 }

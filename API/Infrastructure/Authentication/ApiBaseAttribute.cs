@@ -29,6 +29,7 @@ public class ApiBaseAttribute : ActionFilterAttribute
     }
 
     //TODO: review potential Localization move to url
+    //TODO: remove to cookies
     private static void HandleCultureInfo(IEnumerable<Claim> claims, ApiBaseController controller)
     {
         var language = claims

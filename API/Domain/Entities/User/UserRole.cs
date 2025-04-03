@@ -21,12 +21,16 @@ public class UserRole
 	[ForeignKey(nameof(Role))]
 	public Guid RoleId { get; set; }
 
-	#region NavigationProperies
+    #region NavigationProperies
 
-	// Migration error due to additional FK added
-	// public required User User { get; set; }
+#pragma warning disable CS8618
 
-	public required Role Role { get; set; }
+    // Migration error due to additional FK added
+    // public required User User { get; set; }
 
-	#endregion
+    public Role Role { get; set; }
+
+#pragma warning restore CS8618
+
+    #endregion
 }

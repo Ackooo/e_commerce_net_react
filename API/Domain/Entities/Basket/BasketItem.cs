@@ -32,11 +32,15 @@ public class BasketItem
 	public long ProductId { get; set; }
 
 
-	#region NavigationProperies
+    #region NavigationProperies
 
-	public Product Product { get; set; }
+#pragma warning disable CS8618 
+
+    public Product Product { get; set; }
 
     public Basket Basket { get; set; }
+
+#pragma warning restore CS8618 
 
     #endregion
 
