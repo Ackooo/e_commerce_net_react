@@ -1,5 +1,6 @@
 ﻿namespace API.Controllers.Common;
 
+using Infrastructure.Authentication;
 using Localization;
 
 using Microsoft.AspNetCore.Mvc;

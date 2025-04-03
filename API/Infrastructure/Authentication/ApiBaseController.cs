@@ -1,4 +1,4 @@
-﻿namespace API.Controllers.Common;
+﻿namespace Infrastructure.Authentication;
 
 using System.Globalization;
 

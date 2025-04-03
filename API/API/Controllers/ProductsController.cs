@@ -1,8 +1,5 @@
 ﻿namespace API.Controllers;
 
-using API.Controllers.Common;
-using API.Middleware;
-
 using AutoMapper;
 
 using Domain.DTOs.Product;
@@ -11,6 +8,7 @@ using Domain.Extensions;
 using Domain.Interfaces.Services;
 using Domain.RequestHelpers;
 using Domain.Shared.Constants;
+using Infrastructure.Authentication;
 using Localization;
 
 using Microsoft.AspNetCore.Authorization;
@@ -26,7 +24,7 @@ public class ProductsController(IProductService productService, IImageService im
     #region GET
 
     [HttpGet]
-    [Route("GetProducts", Name = "GetProducts")]
+    [Route("", Name = "GetProducts")]
     [ProducesResponseType(typeof(PagedList<Product>), 200)]
     public async Task<ActionResult<PagedList<Product>>> GetProductsAsync([FromQuery] ProductParams productParams)
     {

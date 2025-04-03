@@ -1,11 +1,8 @@
 ﻿namespace API.Controllers;
 
-using API.Controllers.Common;
-using API.Middleware;
-
 using Domain.DTOs.Order;
 using Domain.Interfaces.Services;
-
+using Infrastructure.Authentication;
 using Localization;
 
 using Microsoft.AspNetCore.Authorization;

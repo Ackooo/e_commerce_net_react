@@ -2,10 +2,7 @@
 
 using System.Text;
 
-using Infrastructure.Authentication;
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 
 public static class AuthenticationConfiguration
@@ -27,7 +24,8 @@ public static class AuthenticationConfiguration
 
         services.AddAuthorization();
 
-		services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
-		services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
+        //left for reference
+		//services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+		//services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
     }
 }

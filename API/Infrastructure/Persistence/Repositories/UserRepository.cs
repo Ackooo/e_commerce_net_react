@@ -8,6 +8,16 @@ using Microsoft.EntityFrameworkCore;
 
 public class UserRepository(StoreContext storeContext) : IUserRepository
 {
+    public async Task<User?> GetUserWithPermissionsAsync(Guid id)
+    {
+        if(id == Guid.Empty) return null;
+
+        return await storeContext.Users
+        .Include(u => u.Roles)
+        .ThenInclude(u => u.Permissions)
+        .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
     public async Task<bool> AddUsersAddressAsync(Guid userId, CreateOrderDto orderDto)
     {
         var user = await storeContext.Users

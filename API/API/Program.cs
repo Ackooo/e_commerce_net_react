@@ -57,6 +57,7 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+//TODO:
 //app.UseAntiforgery();
 
 app.MapControllers();

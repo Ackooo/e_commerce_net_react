@@ -2,14 +2,12 @@
 
 using System.Threading.Tasks;
 
-using API.Controllers.Common;
-using API.Middleware;
-
 using Domain.DTOs.Basket;
 using Domain.Entities.Basket;
 using Domain.Extensions;
 using Domain.Interfaces.Services;
 using Domain.Shared.Constants;
+using Infrastructure.Authentication;
 using Localization;
 
 using Microsoft.AspNetCore.Authorization;

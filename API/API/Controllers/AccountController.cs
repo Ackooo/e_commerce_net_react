@@ -1,14 +1,12 @@
 ﻿namespace API.Controllers;
 
-using API.Controllers.Common;
-using API.Middleware;
-
 using Domain.DTOs.User;
 using Domain.Entities.Basket;
 using Domain.Entities.User;
 using Domain.Extensions;
 using Domain.Interfaces.Services;
 using Domain.Shared.Constants;
+using Infrastructure.Authentication;
 using Localization;
 
 using Microsoft.AspNetCore.Authorization;
@@ -88,7 +86,7 @@ public class AccountController(UserManager<User> userManager, ITokenService toke
         return StatusCode(201);
     }
 
-    [HttpGet("currentUser")]
+    [HttpGet]
     [Route("currentUser", Name = "GetCurrentUser")]
     [ProducesResponseType(typeof(UserDto), 200)]
     public async Task<ActionResult<UserDto>> GetCurrentUserAsync()
