@@ -1,7 +1,8 @@
 ﻿namespace Domain.Interfaces.Services;
 
+using Domain.DTOs.Basket;
 using Domain.Entities.Basket;
-using Domain.Entities.Product;
+using Microsoft.AspNetCore.Http;
 
 public interface IBasketService
 {
@@ -14,13 +15,6 @@ public interface IBasketService
     Task<Basket?> GetBasketAsync(Guid userId, bool isTracked = false);
 
     /// <summary>
-    /// Adds basket to database
-    /// </summary>
-    /// <param name="basket">Basket to add</param>
-    /// <returns>Created basket</returns>
-    Task<Basket> AddBasketAsync(Basket basket);
-
-    /// <summary>
     /// Updates basket from the database
     /// </summary>
     /// <param name="existingBasket">Tracked basket to update</param>
@@ -28,20 +22,21 @@ public interface IBasketService
     Task<bool> UpdateBasketAsync(Basket existingBasket);
 
     /// <summary>
-    /// Adds product to the basket
-    /// </summary>
-    /// <param name="existingBasket">Tracked basket to update</param>
-    /// <param name="existingProduct">Tracked product to add</param>
-    /// <param name="quantity">Quantity of products</param>
-    /// <returns>True if the operation was successful</returns>
-    Task<bool> AddItemAsync(Basket existingBasket, Product existingProduct, int quantity);
-
-    /// <summary>
     /// Removes basket from the database
     /// </summary>
     /// <param name="id"></param>
     /// <returns>True if the operation was successful</returns>
     Task<bool> DeleteBasketAsync(Guid id);
+
+    /// <summary>
+    /// Add item to the Basket if basket exists, otherwise create new basket with the item
+    /// </summary>
+    /// <param name="response">HttpResponse</param>
+    /// <param name="buyerId">User id if exists, otherwise anonymous</param>
+    /// <param name="productId">Item/Product id</param>
+    /// <param name="quantity">Quantity to be added</param>
+    /// <returns>Updated basket</returns>
+    Task<BasketDto?> AddItemToBasket(HttpResponse response, Guid? buyerId, long productId, int quantity);
 
     /// <summary>
     /// Removes product from the basket

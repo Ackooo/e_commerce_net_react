@@ -3,7 +3,6 @@
 using System.Threading.Tasks;
 
 using Domain.DTOs.Basket;
-using Domain.Entities.Basket;
 using Domain.Extensions;
 using Domain.Interfaces.Services;
 using Domain.Shared.Constants;
@@ -19,8 +18,8 @@ using Microsoft.Extensions.Localization;
 [Authorize]
 //[HasPermission(Permissions.BasketAccess)]
 [ApiBase(Order = 1)]
-public class BasketController(IBasketService basketService, IProductService productService,
-    IStringLocalizer<Resource> localizer) : ApiBaseController
+public class BasketController(IBasketService basketService, IStringLocalizer<Resource> localizer)
+    : ApiBaseController
 {
     #region GET
 
@@ -50,23 +49,10 @@ public class BasketController(IBasketService basketService, IProductService prod
     public async Task<ActionResult<BasketDto>> AddItemToBasketAsync(long productId, int quantity)
     {
         var buyerId = GetBuyerId();
-        Basket basket;
-        if(!buyerId.HasValue)
-        {
-            basket = await CreateBasket();
-        }
-        else
-        {
-            var existingBasket = await basketService.GetBasketAsync(buyerId.Value, true);
-            basket = existingBasket ?? await CreateBasket();
-        }
 
-        var product = await productService.GetProductAsync(productId, true);
-        if(product == null) return BadRequest(new ProblemDetails { Title = localizer["Product_NotFound"] });
+        var result = await basketService.AddItemToBasket(Response, buyerId, productId, quantity);
 
-        var result = await basketService.AddItemAsync(basket, product, quantity);
-        if(result) return CreatedAtRoute("GetBasket", basket.MapBasketToDto());
-
+        if(result != null) return CreatedAtRoute("GetBasket", result);
         return BadRequest(new ProblemDetails { Title = localizer["Basket_ProblemSave"] });
     }
 
@@ -107,25 +93,6 @@ public class BasketController(IBasketService basketService, IProductService prod
         }
 
         return !Guid.TryParse(buyerId, out var userId) ? null : userId;
-    }
-
-    private async Task<Basket> CreateBasket()
-    {
-        var buyerId = CurrentUserId;
-        if(!buyerId.HasValue || buyerId == Guid.Empty)
-        {
-            buyerId = Guid.CreateVersion7();
-            var cookieOptions = new CookieOptions
-            {
-                IsEssential = true,
-                Expires = DateTime.Now.AddDays(30),
-                HttpOnly = false
-            };
-            Response.Cookies.Append(RequestConstants.CookiesBasketUserId, buyerId.Value.ToString(), cookieOptions);
-        }
-
-        var basket = new Basket { UserId = buyerId.Value };
-        return await basketService.AddBasketAsync(basket);//start to track
     }
 
     #endregion
