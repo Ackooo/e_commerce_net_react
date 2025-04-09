@@ -3,14 +3,13 @@
 using Domain.DTOs.Basket;
 using Domain.DTOs.Order;
 using Domain.Extensions;
+using Domain.Interfaces.Extensions;
 using Domain.Interfaces.Services;
 using Domain.Shared.Configurations;
 using Infrastructure.Authentication;
-using Localization;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 
 using Stripe;
@@ -21,7 +20,7 @@ using Stripe;
 //[HasPermission(Permissions.PaymentAccess)]
 [ApiBase(Order = 1)]
 public class PaymentsController(IPaymentService paymentService, IBasketService basketService, IOrderService orderService,
-	IOptionsMonitor<StripeSettings> stripeSettings, IStringLocalizer<Resource> localizer) : ApiBaseController
+	IOptionsMonitor<StripeSettings> stripeSettings, IApiLocalizer localizer) : ApiBaseController
 {
 
 	[HttpPost]
@@ -35,7 +34,7 @@ public class PaymentsController(IPaymentService paymentService, IBasketService b
 		if (basket == null) return NotFound();
 
 		if(basket.BasketItems.Count == 0) 
-			return BadRequest(new ProblemDetails { Title = localizer["Basket_Empty"] });
+			return BadRequest(new ProblemDetails { Title = localizer.Translate("Basket_Empty") });
 
         var intent = await paymentService.CreateOrUpdatePaymentIntent(basket);
 		if (intent == null) 

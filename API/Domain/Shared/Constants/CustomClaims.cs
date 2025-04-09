@@ -4,6 +4,6 @@ public static class CustomClaims
 {
 	public const string Permission = "permission";
 
-	public const string Language = "language";
+	public const string Culture = "Culture";
 
 }

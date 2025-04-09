@@ -3,21 +3,20 @@
 using Domain.DTOs.Product;
 using Domain.Entities.Product;
 using Domain.Extensions;
+using Domain.Interfaces.Extensions;
 using Domain.Interfaces.Services;
 using Domain.RequestHelpers;
 using Domain.Shared.Constants;
 using Infrastructure.Authentication;
-using Localization;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 
 [ApiController]
 [Route("api/[controller]")]
 [ApiBase(Order = 1)]
 public class ProductsController(IProductService productService, IImageService imageService,
-    IStringLocalizer<Resource> localizer) : ApiBaseController
+    IApiLocalizer localizer) : ApiBaseController
 {
     #region GET
 
@@ -75,7 +74,7 @@ public class ProductsController(IProductService productService, IImageService im
         var result = await productService.AddProductAsync(product);
         if(result) return CreatedAtRoute("GetProduct", new { product.Id }, product);
 
-        return BadRequest(new ProblemDetails { Title = localizer["Product_ProblemCreate"] });
+        return BadRequest(new ProblemDetails { Title = localizer.Translate("Product_ProblemCreate") });
     }
 
     [HttpPut]
@@ -104,7 +103,7 @@ public class ProductsController(IProductService productService, IImageService im
         var result = await productService.UpdateProductAsync(product);
         if(result) return Ok(product);
 
-        return BadRequest(new ProblemDetails { Title = localizer["Product_ProblemUpdate"] });
+        return BadRequest(new ProblemDetails { Title = localizer.Translate("Product_ProblemUpdate") });
     }
 
     [HttpDelete]

@@ -4,13 +4,12 @@ using Domain.DTOs.Order;
 using Domain.Entities.Order;
 using Domain.Exceptions;
 using Domain.Extensions;
+using Domain.Interfaces.Extensions;
 using Domain.Interfaces.Repository;
 using Domain.Interfaces.Services;
-using Localization;
-using Microsoft.Extensions.Localization;
 
 public class OrderService(IOrderRepository orderRepository, IBasketRepository basketRepository,
-    IUserRepository userRepository, IStringLocalizer<Resource> localizer) : IOrderService
+    IUserRepository userRepository, IApiLocalizer localizer) : IOrderService
 {
     public async Task<OrderDto> GetByIdAsync(Guid id, Guid userId)
     {
@@ -27,7 +26,7 @@ public class OrderService(IOrderRepository orderRepository, IBasketRepository ba
     public async Task<Guid> CreateOrder(Guid userId, CreateOrderDto orderDto)
     {
         var basket = await basketRepository.GetBasketAsync(userId)
-            ?? throw new ApiException(localizer["Basket_ProblemLocate"]);
+            ?? throw new ApiException(localizer.Translate("Basket_ProblemLocate"));
 
         var items = new List<OrderItem>();
         foreach(var item in basket.BasketItems)

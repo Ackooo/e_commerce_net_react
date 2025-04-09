@@ -4,21 +4,20 @@ using System.Threading.Tasks;
 
 using Domain.DTOs.Basket;
 using Domain.Extensions;
+using Domain.Interfaces.Extensions;
 using Domain.Interfaces.Services;
 using Domain.Shared.Constants;
 using Infrastructure.Authentication;
-using Localization;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
 //[HasPermission(Permissions.BasketAccess)]
 [ApiBase(Order = 1)]
-public class BasketController(IBasketService basketService, IStringLocalizer<Resource> localizer)
+public class BasketController(IBasketService basketService, IApiLocalizer localizer)
     : ApiBaseController
 {
     #region GET
@@ -53,7 +52,7 @@ public class BasketController(IBasketService basketService, IStringLocalizer<Res
         var result = await basketService.AddItemToBasket(Response, buyerId, productId, quantity);
 
         if(result != null) return CreatedAtRoute("GetBasket", result);
-        return BadRequest(new ProblemDetails { Title = localizer["Basket_ProblemSave"] });
+        return BadRequest(new ProblemDetails { Title = localizer.Translate("Basket_ProblemSave") });
     }
 
     #endregion
@@ -74,7 +73,7 @@ public class BasketController(IBasketService basketService, IStringLocalizer<Res
         var result = await basketService.RemoveItemAsync(basket, productId, quantity);
         if(result) return Ok();
 
-        return BadRequest(new ProblemDetails { Title = localizer["Basket_ProblemRemove"] });
+        return BadRequest(new ProblemDetails { Title = localizer.Translate("Basket_ProblemRemove") });
     }
 
     #endregion

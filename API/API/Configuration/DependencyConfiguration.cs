@@ -1,8 +1,9 @@
 ﻿namespace API.Configuration;
 
+using Domain.Interfaces.Extensions;
 using Domain.Interfaces.Repository;
 using Domain.Interfaces.Services;
-
+using Infrastructure.Localizer;
 using Infrastructure.Persistence.Repositories;
 using Infrastructure.Services;
 
@@ -10,6 +11,8 @@ public static class DependencyConfiguration
 {
     public static void AddDependencyConfiguration(this IServiceCollection services)
     {
+        services.AddScoped<IApiLocalizer, ApiLocalizer>();
+        
         services.AddScoped<IBasketRepository, BasketRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();

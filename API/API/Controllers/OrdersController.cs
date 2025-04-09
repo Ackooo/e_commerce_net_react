@@ -1,19 +1,18 @@
 ﻿namespace API.Controllers;
 
 using Domain.DTOs.Order;
+using Domain.Interfaces.Extensions;
 using Domain.Interfaces.Services;
 using Infrastructure.Authentication;
-using Localization;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
 [ApiBase(Order = 1)]
-public class OrdersController(IOrderService orderService, IStringLocalizer<Resource> localizer) 
+public class OrdersController(IOrderService orderService, IApiLocalizer localizer) 
 	: ApiBaseController
 {
     #region GET
@@ -48,7 +47,7 @@ public class OrdersController(IOrderService orderService, IStringLocalizer<Resou
             var result = await orderService.CreateOrder(CurrentUserId!.Value, orderDto);
 			if (result != Guid.Empty)
 				return CreatedAtRoute("GetOrder", new { id = result }, result);
-			return BadRequest(localizer["Order_ProblemCreate"]);
+			return BadRequest(localizer.Translate("Order_ProblemCreate"));
 		}
 		catch (Exception ex)
 		{

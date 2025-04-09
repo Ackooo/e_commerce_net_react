@@ -27,8 +27,7 @@ public class TokenService(UserManager<User> userManager, IUserService userServic
 			//new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
 			new(ClaimTypes.Email, user.Email!),
 			new(ClaimTypes.Name, user.UserName!),
-			new (ClaimTypes.Sid, user.Id.ToString()),
-			new (CustomClaims.Language, user.Language.ToString())
+			new (ClaimTypes.Sid, user.Id.ToString())			
 		};
 
 		var userInfo = await userRepository.GetUserWithPermissionsAsync(user.Id) 
