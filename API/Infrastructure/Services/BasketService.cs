@@ -2,6 +2,7 @@
 
 using Domain.DTOs.Basket;
 using Domain.Entities.Basket;
+using Domain.Entities.User;
 using Domain.Extensions;
 using Domain.Interfaces.Repository;
 using Domain.Interfaces.Services;
@@ -10,7 +11,7 @@ using Microsoft.AspNetCore.Http;
 
 public class BasketService(IBasketRepository basketRepository, IProductService productService) : IBasketService
 {
-    public Task<Basket?> GetBasketAsync(Guid userId, bool isTracked = false)
+    public Task<Basket?> GetBasketAsync(Guid userId, bool isTracked)
     {
         if(userId == Guid.Empty) return Task.FromResult<Basket?>(null);
         return basketRepository.GetBasketAsync(userId, isTracked);
@@ -18,11 +19,13 @@ public class BasketService(IBasketRepository basketRepository, IProductService p
 
     public async Task<bool> UpdateBasketAsync(Basket existingBasket)
     {
+        ArgumentNullException.ThrowIfNull(existingBasket);
         return await basketRepository.UpdateBasketAsync(existingBasket);
     }
 
     public async Task<bool> DeleteBasketAsync(Guid id)
     {
+        if(id == Guid.Empty) throw new ArgumentNullException(nameof(id));
         return await basketRepository.DeleteBasketAsync(id);
     }
 
@@ -43,12 +46,13 @@ public class BasketService(IBasketRepository basketRepository, IProductService p
         var product = await productService.GetProductAsync(productId, true);
         if(product == null) return null;
 
-        var result = await basketRepository.AddItemAsync(basket, product, quantity);
+        await basketRepository.AddItemAsync(basket, product, quantity);
         return basket.MapToBasketDto();
     }
 
     public async Task<bool> RemoveItemAsync(Basket existingBasket, long productId, int quantity)
     {
+        ArgumentNullException.ThrowIfNull(existingBasket);
         return await basketRepository.RemoveItemAsync(existingBasket, productId, quantity);
     }
 

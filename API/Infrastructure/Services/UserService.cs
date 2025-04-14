@@ -9,6 +9,8 @@ public class UserService(IUserRepository userRepository) : IUserService
 {
     public async Task<bool> AddRoleToUserAsync(Guid userId, string roleName)
     {
+        if(userId == Guid.Empty) throw new ArgumentNullException(nameof(userId));
+
         var role = await userRepository.GetRoleAsync(roleName);
         if(await userRepository.CheckUserRoleExistenceAsync(userId, role.Id))
         {

@@ -12,7 +12,7 @@ public interface IProductRepository
     /// <param name="id">Product Id</param>
     /// <param name="isTracked"> Determines whether a query is tracking </param>
     /// <returns>The product if found, otherwise null</returns>
-    Task<Product?> GetProductAsync(long id, bool isTracked = false);
+    Task<Product?> GetProductAsync(long id, bool isTracked);
 
     /// <summary>
     /// 

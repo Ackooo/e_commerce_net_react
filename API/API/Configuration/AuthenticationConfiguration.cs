@@ -1,10 +1,8 @@
 ﻿namespace API.Configuration;
 
-using System.Globalization;
 using System.Text;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.IdentityModel.Tokens;
 
 public static class AuthenticationConfiguration

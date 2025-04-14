@@ -3,6 +3,7 @@
 using Domain.DTOs.User;
 using Domain.Entities.Basket;
 using Domain.Entities.User;
+using Domain.Exceptions;
 using Domain.Extensions;
 using Domain.Interfaces.Extensions;
 using Domain.Interfaces.Services;
@@ -19,7 +20,7 @@ using Microsoft.EntityFrameworkCore;
 [Authorize]
 [ApiBase(Order = 1)]
 public class AccountController(UserManager<User> userManager, IUserService userService,
-    ITokenService tokenService, IBasketService basketService,
+    ITokenService tokenService, IBasketService basketService, IHostEnvironment env,
     IApiLocalizer localizer) : ApiBaseController
 {
 
@@ -28,7 +29,7 @@ public class AccountController(UserManager<User> userManager, IUserService userS
     [AllowAnonymous]
     [ProducesResponseType(typeof(UserDto), 200)]
     public async Task<ActionResult<UserDto>> LoginAsync(LoginDto loginDto)
-    {        
+    {
         if(string.IsNullOrWhiteSpace(loginDto.Username) || string.IsNullOrWhiteSpace(loginDto.Password))
             return BadRequest(localizer.Translate("Login_InvalidCreds"));
 
@@ -38,7 +39,7 @@ public class AccountController(UserManager<User> userManager, IUserService userS
             return Unauthorized();
         }
 
-        var userBasket = await basketService.GetBasketAsync(user.Id);
+        var userBasket = await basketService.GetBasketAsync(user.Id, false);
         var anonBasket = await RetrieveBasket(Request.Cookies[RequestConstants.CookiesBasketUserId]);
 
         if(anonBasket != null)
@@ -50,7 +51,7 @@ public class AccountController(UserManager<User> userManager, IUserService userS
 
         return new UserDto
         {
-            Email = user.Email,
+            Email = user.Email!,
             Token = await tokenService.GenerateTokenAsync(user),
             Basket = anonBasket != null ? anonBasket.MapToBasketDto() : userBasket?.MapToBasketDto()
         };
@@ -91,10 +92,13 @@ public class AccountController(UserManager<User> userManager, IUserService userS
     [ProducesResponseType(typeof(UserDto), 200)]
     public async Task<ActionResult<UserDto>> GetCurrentUserAsync()
     {
-        ArgumentNullException.ThrowIfNull(CurrentUserId);
-        var user = await userManager.FindByIdAsync(CurrentUserId.ToString());
-        var userBasket = await basketService.GetBasketAsync(user.Id);
+        if(CurrentUserId == null || CurrentUserId == Guid.Empty)
+            throw new ApiException(localizer.Translate("Login_InvalidCreds"));
 
+        var user = await userManager.FindByIdAsync(CurrentUserId.ToString()!) 
+            ?? throw new ApiException(localizer.Translate("Login_InvalidCreds"));
+
+        var userBasket = await basketService.GetBasketAsync(user.Id, false);
         return new UserDto
         {
             Email = user.Email!,
@@ -128,11 +132,6 @@ public class AccountController(UserManager<User> userManager, IUserService userS
             culture = CultureInfos.English_US;
         }
 
-        var isDevelopment = string.Equals(Environment
-            .GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"), 
-            "development", 
-            StringComparison.InvariantCultureIgnoreCase);
-
         Response.Cookies.Append(
             CustomClaims.Culture,
             //CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
@@ -140,8 +139,8 @@ public class AccountController(UserManager<User> userManager, IUserService userS
             new CookieOptions
             {
                 Expires = DateTimeOffset.UtcNow.AddYears(1),
-                HttpOnly = isDevelopment,
-                Secure = isDevelopment,
+                HttpOnly = env.IsDevelopment(),
+                Secure = env.IsDevelopment(),
                 SameSite = SameSiteMode.None
 
             });
@@ -171,7 +170,7 @@ public class AccountController(UserManager<User> userManager, IUserService userS
         return true;
     }
 
-    private async Task<Basket?> RetrieveBasket(string buyerId)
+    private async Task<Basket?> RetrieveBasket(string? buyerId)
     {
         if(string.IsNullOrWhiteSpace(buyerId))
         {
@@ -181,7 +180,7 @@ public class AccountController(UserManager<User> userManager, IUserService userS
 
         return !Guid.TryParse(buyerId, out var userId)
             ? null
-            : await basketService.GetBasketAsync(userId);
+            : await basketService.GetBasketAsync(userId, false);
     }
 
     #endregion

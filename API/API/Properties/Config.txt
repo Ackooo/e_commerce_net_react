@@ -8,3 +8,32 @@ CloudinarySettings:
 
 dotnet ef migrations add InitialCreate --project ../api/infrastructure --startup-project ../api/api
 dotnet ef database update
+
+
+
+-logger to db x3 - log schema
+swagger samo na dev
+merge q
+dodati lokaciju prodavca / prodavca
+in area 50km
+google api
+iis
+config u drugi fajl - konfiguracija ep
+dijkstra calc
+soketi i signalR - progress bar?
+chatbot / ai integracija
+//push notification?
+jquery/ajax
+input/output excel
+aspose / quartz
+licence
+prevodi u db ili EP za izmene u fajlu?
+global search?
+chart za admin
+Expression build
+review proizovda sa zvezdicama
+feature flag
+
+
+
+prevod klijenta

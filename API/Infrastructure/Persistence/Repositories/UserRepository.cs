@@ -13,7 +13,7 @@ public class UserRepository(StoreContext storeContext) : IUserRepository
 
     public async Task<User?> GetUserWithPermissionsAsync(Guid id)
     {
-        if(id == Guid.Empty) return null;
+        if(id == Guid.Empty) throw new ArgumentNullException(nameof(id));
 
         return await storeContext.Users
         .Include(u => u.Roles)
@@ -23,6 +23,9 @@ public class UserRepository(StoreContext storeContext) : IUserRepository
 
     public async Task<bool> AddUsersAddressAsync(Guid userId, CreateOrderDto orderDto)
     {
+        ArgumentNullException.ThrowIfNull(orderDto);
+        if(userId == Guid.Empty) throw new ArgumentNullException(nameof(userId));
+
         var user = await storeContext.Users
                 .Include(u => u.Address)
                 .FirstOrDefaultAsync(x => x.Id == userId);
@@ -49,6 +52,7 @@ public class UserRepository(StoreContext storeContext) : IUserRepository
 
     public Task<Role> GetRoleAsync(string name)
     {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(name);
         return storeContext.Roles.AsNoTracking()
             .Where(x => x.Name == name).FirstAsync();
     }
@@ -60,12 +64,18 @@ public class UserRepository(StoreContext storeContext) : IUserRepository
 
     public Task<bool> CheckUserRoleExistenceAsync(Guid userId, Guid roleId)
     {
+        if(userId==Guid.Empty) throw new ArgumentNullException(nameof(userId));
+        if(roleId==Guid.Empty) throw new ArgumentNullException(nameof(roleId));
+
         return storeContext.UserRoles.AsNoTracking()
             .AnyAsync(x => x.UserId == userId && x.RoleId == roleId);
     }
 
     public async Task<bool> AddUserRoleAsync(Guid userId, Guid roleId)
     {
+        if(userId==Guid.Empty) throw new ArgumentNullException(nameof(userId));
+        if(roleId==Guid.Empty) throw new ArgumentNullException(nameof(roleId));
+
         //FK checks in database
         var userRole = new UserRole
         {
@@ -83,6 +93,8 @@ public class UserRepository(StoreContext storeContext) : IUserRepository
 
     public async Task<HashSet<string>> GetPermissionsAsync(Guid memberId)
     {
+        if(memberId==Guid.Empty) throw new ArgumentNullException(nameof(memberId));
+
         var roles = await storeContext.Set<User>()
             .Include(x => x.Roles)
             .ThenInclude(x => x.Permissions)
@@ -90,11 +102,10 @@ public class UserRepository(StoreContext storeContext) : IUserRepository
             .Select(x => x.Roles)
             .ToArrayAsync();
 
-        return roles
+        return [.. roles
             .SelectMany(x => x)
             .SelectMany(x => x.Permissions)
-            .Select(x => x.Name)
-            .ToHashSet();
+            .Select(x => x.Name)];
     }
 
     #endregion

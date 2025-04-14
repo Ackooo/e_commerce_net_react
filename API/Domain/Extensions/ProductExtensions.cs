@@ -29,7 +29,7 @@ public static class ProductExtensions
 
     }
 
-    public static IQueryable<Product> Filter(this IQueryable<Product> query, string brands, string types)
+    public static IQueryable<Product> Filter(this IQueryable<Product> query, string? brands, string? types)
     {
         var brandList = new List<string>();
         var typeList = new List<string>();

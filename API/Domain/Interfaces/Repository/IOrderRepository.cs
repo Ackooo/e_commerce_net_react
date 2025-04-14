@@ -10,7 +10,7 @@ public interface IOrderRepository
     /// <param name="id">Order id</param>
     /// <param name="buyerId">User id</param>
     /// <returns>Order if exists, otherwise null</returns>
-    Task<Order> GetByIdAsync(Guid id, Guid userId, bool isTracked = false);
+    Task<Order> GetByIdAsync(Guid id, Guid userId, bool isTracked);
 
     /// <summary>
     /// Get order from database

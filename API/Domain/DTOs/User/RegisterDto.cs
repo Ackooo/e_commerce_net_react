@@ -1,6 +1,9 @@
 ﻿namespace Domain.DTOs.User;
 
+using System.ComponentModel.DataAnnotations;
+
 public class RegisterDto : LoginDto
 {
-    public string? Email { get; set; }
+    [Required]
+    public required string Email { get; set; }
 }

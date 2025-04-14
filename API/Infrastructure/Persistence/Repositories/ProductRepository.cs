@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 public class ProductRepository(StoreContext storeContext) : IProductRepository
 {
 
-    public Task<Product?> GetProductAsync(long id, bool isTracked = false)
+    public Task<Product?> GetProductAsync(long id, bool isTracked)
     {
         var query = isTracked
             ? storeContext.Products.AsTracking()

@@ -36,7 +36,7 @@ public class ProductsController(IProductService productService, IImageService im
     [ProducesResponseType(typeof(Product), 200)]
     public async Task<ActionResult<Product>> GetProductAsync(long id)
     {
-        var product = await productService.GetProductAsync(id);
+        var product = await productService.GetProductAsync(id, false);
         return product == null ? NotFound() : product;
     }
 

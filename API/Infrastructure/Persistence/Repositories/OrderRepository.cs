@@ -8,9 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 public class OrderRepository(StoreContext storeContext) : IOrderRepository
 {
-	public Task<Order> GetByIdAsync(Guid id, Guid userId, bool isTracked = false)
+	public Task<Order> GetByIdAsync(Guid id, Guid userId, bool isTracked)
 	{
-		var query = isTracked
+		if(id==Guid.Empty) throw new ArgumentNullException(nameof(id));
+		if(userId==Guid.Empty) throw new ArgumentNullException(nameof(userId));
+
+        var query = isTracked
 			? storeContext.Orders.AsTracking()
 			: storeContext.Orders.AsNoTracking();
 
@@ -22,7 +25,9 @@ public class OrderRepository(StoreContext storeContext) : IOrderRepository
 
 	public Task<List<Order>> GetByBuyerIdAsync(Guid userId)
 	{
-		return storeContext.Orders.AsNoTracking()
+		if(userId==Guid.Empty) throw new ArgumentNullException(nameof(userId));
+
+        return storeContext.Orders.AsNoTracking()
 			.Include(o => o.OrderItems)
 			.Where(x => x.UserId == userId)
 			.ToListAsync();
@@ -30,6 +35,7 @@ public class OrderRepository(StoreContext storeContext) : IOrderRepository
 
 	public async Task<Order> AddOrderAsync(Order order)
 	{
+		ArgumentNullException.ThrowIfNull(order);
 		await storeContext.Orders.AddAsync(order);
 		await storeContext.SaveChangesAsync();
 		return order;

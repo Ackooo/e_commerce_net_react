@@ -13,19 +13,29 @@ public class OrderService(IOrderRepository orderRepository, IBasketRepository ba
 {
     public async Task<OrderDto> GetByIdAsync(Guid id, Guid userId)
     {
-        var order = await orderRepository.GetByIdAsync(id, userId);
-        return order.MapToOrderDto();
+        if(id == Guid.Empty) throw new ArgumentNullException(nameof(id));
+        if(userId == Guid.Empty) throw new ArgumentNullException(nameof(userId));        
+
+        var order = await orderRepository.GetByIdAsync(id, userId, false);
+
+        return order != null 
+            ? order.MapToOrderDto() 
+            : throw new ApiException(localizer.Translate("Login_InvalidCreds"));
     }
 
     public async Task<List<OrderDto>> GetByBuyerIdAsync(Guid userId)
     {
+        if(userId == Guid.Empty) throw new ArgumentNullException(nameof(userId));
+
         var orders = await orderRepository.GetByBuyerIdAsync(userId);
         return [.. orders.Select(x => x.MapToOrderDto())];
     }
 
     public async Task<Guid> CreateOrder(Guid userId, CreateOrderDto orderDto)
     {
-        var basket = await basketRepository.GetBasketAsync(userId)
+        if(userId == Guid.Empty) throw new ArgumentNullException(nameof(userId));
+
+        var basket = await basketRepository.GetBasketAsync(userId, false)
             ?? throw new ApiException(localizer.Translate("Basket_ProblemLocate"));
 
         var items = new List<OrderItem>();

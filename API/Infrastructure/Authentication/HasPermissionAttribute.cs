@@ -40,7 +40,7 @@ public sealed class HasPermissionAttribute(Permissions[] mandatoryPermissions) :
                 return;
             }
 
-            //currently unnecessary
+            //TODO: currently unnecessary
             //controller.CurrentUser = user;
             await next();
         }

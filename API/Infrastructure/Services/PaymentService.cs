@@ -13,6 +13,7 @@ public class PaymentService(IOptionsMonitor<StripeSettings> stripeSettings) : IP
 
     public async Task<PaymentIntent> CreateOrUpdatePaymentIntent(Basket basket)
     {
+        ArgumentNullException.ThrowIfNull(basket);
         StripeConfiguration.ApiKey = stripeSettings.CurrentValue.SecretKey;
 
         var service = new PaymentIntentService();

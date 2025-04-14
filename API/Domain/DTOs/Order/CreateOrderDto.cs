@@ -5,6 +5,6 @@ using Domain.Entities.User;
 
 public class CreateOrderDto
 {
-    public bool SaveAddress { get; set; }
-    public Address ShippingAddress { get; set; }
+    public required bool SaveAddress { get; set; }
+    public required Address ShippingAddress { get; set; }
 }

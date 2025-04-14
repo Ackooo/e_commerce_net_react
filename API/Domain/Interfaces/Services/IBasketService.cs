@@ -12,7 +12,7 @@ public interface IBasketService
     /// <param name="userId">User id</param>
     /// <param name="isTracked">Determines whether a query is tracking</param>
     /// <returns>The basket if found, otherwise null</returns>
-    Task<Basket?> GetBasketAsync(Guid userId, bool isTracked = false);
+    Task<Basket?> GetBasketAsync(Guid userId, bool isTracked);
 
     /// <summary>
     /// Updates basket from the database

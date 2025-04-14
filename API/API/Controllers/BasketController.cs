@@ -31,7 +31,7 @@ public class BasketController(IBasketService basketService, IApiLocalizer locali
         var buyerId = GetBuyerId();
         if(!buyerId.HasValue) return NotFound();
 
-        var basket = await basketService.GetBasketAsync(buyerId.Value);
+        var basket = await basketService.GetBasketAsync(buyerId.Value, false);
         if(basket == null) return NotFound();
 
         return basket.MapToBasketDto();

@@ -13,7 +13,6 @@
     <Folder Include="Mappings\" />
     <Folder Include="Security\" />
     <Folder Include="Persistence\EntitiesConfig\" />
-    <Folder Include="Persistence\Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>

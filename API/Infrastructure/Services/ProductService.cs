@@ -10,7 +10,7 @@ using Domain.RequestHelpers;
 
 public class ProductService(IProductRepository productRepository) : IProductService
 {
-    public async Task<Product?> GetProductAsync(long id, bool isTracked = false)
+    public async Task<Product?> GetProductAsync(long id, bool isTracked)
     {
         return await productRepository.GetProductAsync(id, isTracked);
     }

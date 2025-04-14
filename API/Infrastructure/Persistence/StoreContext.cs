@@ -36,17 +36,17 @@ public class StoreContext(DbContextOptions options, IOptionsMonitor<ConnectionSe
 
 	#endregion
 
-	protected override void OnModelCreating(ModelBuilder builder)
+	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
-		base.OnModelCreating(builder);
+		base.OnModelCreating(modelBuilder);
 
-		builder.Ignore<IdentityUserToken<Guid>>();
-		builder.Ignore<IdentityUserRole<Guid>>();
-		builder.Ignore<IdentityUserLogin<Guid>>();
-		builder.Ignore<IdentityUserClaim<Guid>>();
-		builder.Ignore<IdentityRoleClaim<Guid>>();
+		modelBuilder.Ignore<IdentityUserToken<Guid>>();
+		modelBuilder.Ignore<IdentityUserRole<Guid>>();
+		modelBuilder.Ignore<IdentityUserLogin<Guid>>();
+		modelBuilder.Ignore<IdentityUserClaim<Guid>>();
+		modelBuilder.Ignore<IdentityRoleClaim<Guid>>();
 
-		builder.Entity<User>(x =>
+		modelBuilder.Entity<User>(x =>
 		{
 			x.Ignore(c => c.LockoutEnabled);
 			x.Ignore(c => c.TwoFactorEnabled);
@@ -54,12 +54,12 @@ public class StoreContext(DbContextOptions options, IOptionsMonitor<ConnectionSe
 			x.Ignore(c => c.PhoneNumberConfirmed);
 		});
 
-		builder.Entity<User>()
+		modelBuilder.Entity<User>()
 			.HasMany(x => x.Roles)
 			.WithMany(x => x.Users)
 			.UsingEntity<UserRole>();
 
-		builder.Entity<Role>()
+		modelBuilder.Entity<Role>()
 			.HasMany(x => x.Permissions)
 			.WithMany(x => x.Roles)
 			.UsingEntity<RolePermission>();
