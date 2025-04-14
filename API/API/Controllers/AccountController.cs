@@ -116,7 +116,10 @@ public class AccountController(UserManager<User> userManager, IUserService userS
             .FirstOrDefaultAsync();
     }
 
+    #region Culture
+
     [HttpPost]
+    [AllowAnonymous]
     [Route("SetCulture", Name = "SetCulture")]
     public IActionResult SetCulture(string culture)
     {
@@ -125,17 +128,36 @@ public class AccountController(UserManager<User> userManager, IUserService userS
             culture = CultureInfos.English_US;
         }
 
+        var isDevelopment = string.Equals(Environment
+            .GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"), 
+            "development", 
+            StringComparison.InvariantCultureIgnoreCase);
+
         Response.Cookies.Append(
             CustomClaims.Culture,
             //CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
             culture,
             new CookieOptions
             {
-                Expires = DateTimeOffset.UtcNow.AddYears(1)
+                Expires = DateTimeOffset.UtcNow.AddYears(1),
+                HttpOnly = isDevelopment,
+                Secure = isDevelopment,
+                SameSite = SameSiteMode.None
+
             });
 
         return Ok();
     }
+
+    [HttpGet]
+    [AllowAnonymous]
+    [Route("AvailableCultures", Name = "GetAvailableCultures")]
+    public List<string> GetAvailableCultures()
+    {
+        return CultureInfos.SupportedCultures;
+    }
+
+    #endregion
 
     #region Helper
 

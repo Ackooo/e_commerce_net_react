@@ -58,7 +58,7 @@ axios.interceptors.response.use(async response => {
 
 const requests = {
     get: (url: string, params?: URLSearchParams) => axios.get(url, { params }).then(responseBody),
-    post: (url: string, body: {}) => axios.post(url, body).then(responseBody),
+    post: (url: string, body: {}, p0?: { withCredentials: boolean; }) => axios.post(url, body).then(responseBody),
     put: (url: string, body: {}) => axios.put(url, body).then(responseBody),
     delete: (url: string) => axios.delete(url).then(responseBody),
     postForm: (url:string, data:FormData) => axios.post(url, data, {
@@ -107,7 +107,10 @@ const Account = {
     login: (values: any) => requests.post('account/login', values),
     register: (values: any) => requests.post('account/register', values),
     currentUser: () => requests.get('account/currentUser'),
-    fetchAddress: () => requests.get('account/savedAddress')
+    fetchAddress: () => requests.get('account/savedAddress'),
+    fetchCultures: () => requests.get('account/availableCultures'),
+    setCulture: (value: any) => requests.post(`account/setCulture?culture=${value}`, {}, { withCredentials: true }),
+
 }
 
 const Orders = {

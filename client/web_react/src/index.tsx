@@ -21,12 +21,11 @@ root.render(
   <React.StrictMode>
     {/* <App /> */}
     {/* provide react context to app */}
-    {/*<StoreProvier> moved to redux*/} 
-      {/* <Provider store={store}> */}
-      <Provider store={store}>
+    {/*<StoreProvier> moved to redux*/}
+    {/* <Provider store={store}> */}
+    <Provider store={store}>
       <RouterProvider router={router} />
-      </Provider>
-    
+    </Provider>
     {/*</StoreProvier>*/}
   </React.StrictMode>
 );

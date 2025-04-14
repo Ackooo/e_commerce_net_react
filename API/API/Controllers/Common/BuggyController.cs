@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]")]
+[ApiBase(Order = 1)]
 public class BuggyController(IApiLocalizer localizer) : ApiBaseController
 {
 	[HttpGet("not-found")]

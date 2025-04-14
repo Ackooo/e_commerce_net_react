@@ -13,6 +13,8 @@ export interface ProductParams {
   searchTerm?: string;
   types: string[];
   brands: string[];
+  minPrice?: number;
+  maxPrice?: number;
   pageNumber: number;
   pageSize: number;
 }

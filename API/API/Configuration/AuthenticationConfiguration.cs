@@ -1,8 +1,10 @@
 ﻿namespace API.Configuration;
 
+using System.Globalization;
 using System.Text;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.IdentityModel.Tokens;
 
 public static class AuthenticationConfiguration
@@ -28,4 +30,19 @@ public static class AuthenticationConfiguration
 		//services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
 		//services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
     }
+
+    public static void UseCorsConfiguration(this WebApplication app)
+    {
+        app.UseCors(opt =>
+        {
+            opt
+            .WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+        });
+        
+        //app.UseHttpsRedirection();
+    }
+
 }
