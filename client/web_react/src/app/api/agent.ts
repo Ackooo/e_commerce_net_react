@@ -1,27 +1,25 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
+import axios, { type AxiosError, type AxiosResponse } from "axios";
+
 import { router } from "../router/Routes";
-import { PaginatedResponse } from "../models/pagination";
 import { store } from "../store/configureStore";
 
-const simulateDelay = () => new Promise((resolve) => setTimeout(resolve, 500));
-//TODO: config api url
-axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+import { PaginatedResponse } from "../models/pagination";
+
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 axios.defaults.withCredentials = true;
+
 const responseBody = (response: AxiosResponse) => response.data;
 
 axios.interceptors.request.use((config) => {
   const token = store.getState().account.user?.token;
   if (token) config.headers.Authorization = `Bearer ${token}`;
+
   return config;
 });
 
 axios.interceptors.response.use(
   async (response) => {
-    //TODO: testing purpose
-    await simulateDelay();
-
-    //lower case because of axios properties
     const pagination = response.headers["pagination"];
     if (pagination) {
       response.data = new PaginatedResponse(
