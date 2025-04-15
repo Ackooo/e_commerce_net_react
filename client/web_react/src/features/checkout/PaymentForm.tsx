@@ -1,12 +1,16 @@
-import { useFormContext } from 'react-hook-form';
-import AppTextInput from '../../app/components/AppTextInput';
-import { Typography, Grid, TextField } from '@mui/material';
-import { CardCvcElement, CardExpiryElement, CardNumberElement } from '@stripe/react-stripe-js';
-import { StripeInput } from './StripeInput';
-import { StripeElementType } from '@stripe/stripe-js';
+import { useFormContext } from "react-hook-form";
+import AppTextInput from "../../app/components/AppTextInput";
+import { Typography, Grid, TextField } from "@mui/material";
+import {
+  CardCvcElement,
+  CardExpiryElement,
+  CardNumberElement,
+} from "@stripe/react-stripe-js";
+import { StripeInput } from "./StripeInput";
+import { StripeElementType } from "@stripe/stripe-js";
 
 interface Props {
-  cardState: { elementError: { [key in StripeElementType]?: string } },
+  cardState: { elementError: { [key in StripeElementType]?: string } };
   onCardInputChange: (event: any) => void;
 }
 
@@ -21,8 +25,8 @@ export default function PaymentForm({ cardState, onCardInputChange }: Props) {
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <AppTextInput
-            name='nameOnCard'
-            label='Name on card'
+            name="nameOnCard"
+            label="Name on card"
             control={control}
           />
         </Grid>
@@ -40,8 +44,8 @@ export default function PaymentForm({ cardState, onCardInputChange }: Props) {
             InputProps={{
               inputComponent: StripeInput,
               inputProps: {
-                component: CardNumberElement
-              }
+                component: CardNumberElement,
+              },
             }}
           />
         </Grid>
@@ -59,8 +63,8 @@ export default function PaymentForm({ cardState, onCardInputChange }: Props) {
             InputProps={{
               inputComponent: StripeInput,
               inputProps: {
-                component: CardExpiryElement
-              }
+                component: CardExpiryElement,
+              },
             }}
           />
         </Grid>
@@ -78,8 +82,8 @@ export default function PaymentForm({ cardState, onCardInputChange }: Props) {
             InputProps={{
               inputComponent: StripeInput,
               inputProps: {
-                component: CardCvcElement
-              }
+                component: CardCvcElement,
+              },
             }}
           />
         </Grid>
@@ -87,3 +91,4 @@ export default function PaymentForm({ cardState, onCardInputChange }: Props) {
     </>
   );
 }
+

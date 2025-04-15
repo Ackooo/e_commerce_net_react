@@ -1,9 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
-import Header from './Header';
-import { Box, Container, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import Header from "./Header";
+import {
+  Box,
+  Container,
+  CssBaseline,
+  ThemeProvider,
+  createTheme,
+} from "@mui/material";
 import { Outlet, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import LoadingComponent from "./LoadingComponent";
 import { useAppDispatch } from "../store/configureStore";
 import { fetchBasketAsync } from "../../features/basket/basketSlice";
@@ -26,22 +32,22 @@ function App() {
     } catch (error) {
       console.log(error);
     }
-  }, [dispatch])
+  }, [dispatch]);
 
   useEffect(() => {
     initApp().then(() => setLoading(false));
-  }, [initApp])
+  }, [initApp]);
 
   const [darkMode, setDarkMode] = useState(false);
-  const paletteType = darkMode ? 'dark' : 'light';
+  const paletteType = darkMode ? "dark" : "light";
   const theme = createTheme({
     palette: {
       mode: paletteType,
       background: {
-        default: paletteType === 'light' ? '#eaeaea' : '#121212'
-      }
-    }
-  })
+        default: paletteType === "light" ? "#eaeaea" : "#121212",
+      },
+    },
+  });
 
   function handleThemeChange() {
     setDarkMode(!darkMode);
@@ -68,7 +74,6 @@ function App() {
         </Box>
 
         <Footer />
-        
       </Box>
     </ThemeProvider>
   );
