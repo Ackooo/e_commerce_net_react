@@ -6,8 +6,7 @@ import { store } from "../store/configureStore";
 
 const simulateDelay = () => new Promise((resolve) => setTimeout(resolve, 500));
 //TODO: config api url
-axios.defaults.baseURL =
-  "https://e-commerce-net-react-api-fec2enesbxa6geb3.germanywestcentral-01.azurewebsites.net/api/";
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 axios.defaults.withCredentials = true;
 const responseBody = (response: AxiosResponse) => response.data;
 
@@ -165,4 +164,3 @@ const agent = {
 };
 
 export default agent;
-
