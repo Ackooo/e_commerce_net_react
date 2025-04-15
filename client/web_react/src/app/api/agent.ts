@@ -6,7 +6,7 @@ import { store } from "../store/configureStore";
 
 const simulateDelay = () => new Promise(resolve => setTimeout(resolve, 500));
 //TODO: config api url
-axios.defaults.baseURL = 'https://localhost:5000/api/';
+axios.defaults.baseURL = process.env.E_COMMERCE_NET_REACT_API_URL;
 axios.defaults.withCredentials = true;
 const responseBody = (response: AxiosResponse) => response.data;
 
@@ -58,7 +58,10 @@ axios.interceptors.response.use(async response => {
 
 const requests = {
     get: (url: string, params?: URLSearchParams) => axios.get(url, { params }).then(responseBody),
-    post: (url: string, body: {}, p0?: { withCredentials: boolean; }) => axios.post(url, body).then(responseBody),
+    post: (url: string, body: {}, p0?: { withCredentials: boolean }) => {        
+        const config = p0 ? { withCredentials: p0.withCredentials } : {}; 
+        return axios.post(url, body, config).then(responseBody);
+      },
     put: (url: string, body: {}) => axios.put(url, body).then(responseBody),
     delete: (url: string) => axios.delete(url).then(responseBody),
     postForm: (url:string, data:FormData) => axios.post(url, data, {
@@ -105,7 +108,7 @@ const Basket = {
 
 const Account = {
     login: (values: any) => requests.post('account/login', values),
-    register: (values: any) => requests.post('account/register', values),
+    register: (values: any) => requests.post('account/register', values, { withCredentials: true }),
     currentUser: () => requests.get('account/currentUser'),
     fetchAddress: () => requests.get('account/savedAddress'),
     fetchCultures: () => requests.get('account/availableCultures'),

@@ -10,13 +10,17 @@ public static class SettingsConfiguration
     {
         var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
         var configurationBuilder = new ConfigurationBuilder()
-            .SetBasePath($"{Directory.GetCurrentDirectory()}/Properties")            
-            .AddJsonFile($"appsettings.{environment}.json", false, true);            
+            .SetBasePath(Directory.GetCurrentDirectory());            
         
         var isDevelopment = environment == Environments.Development;
         if (isDevelopment)
         {
+            configurationBuilder.AddJsonFile($"Properties/appsettings.Development.json", false, true);
             configurationBuilder.AddUserSecrets<Program>();
+        }
+        else
+        {
+            configurationBuilder.AddJsonFile("Properties/appsettings.json", true, true);
         }
 
         configurationBuilder.AddCommandLine(args);
