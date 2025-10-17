@@ -2,5 +2,5 @@
 
 public class ConnectionSettings
 {
-    public required string StoreContext { get; set; }
+    public required string StoreContext { get; set; }    
 }

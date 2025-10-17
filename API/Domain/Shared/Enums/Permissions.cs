@@ -37,7 +37,14 @@ public enum Permissions
 	UserModify = 51,
 	UserDelete = 52,
 
-	#endregion
+    #endregion
+
+    #region Warehouse
+
+    WarehouseAccess = 60,    
+    WarehouseConfiguration = 61,
+
+    #endregion
 }
 
 //public const string BasketAccess = "BasketAccess";

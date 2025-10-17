@@ -3,10 +3,10 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using Domain.Shared.Constants;
 using Product;
 
-[Table(nameof(BasketItem), Schema = "Store")]
+[Table(nameof(BasketItem), Schema = DbConstants.DbSchemaNameStore)]
 public class BasketItem
 {
 

@@ -5,9 +5,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using Domain.Entities.User;
+using Domain.Shared.Constants;
 using Domain.Shared.Enums;
 
-[Table(nameof(Order), Schema = "Store")]
+[Table(nameof(Order), Schema = DbConstants.DbSchemaNameStore)]
 public class Order
 {
 

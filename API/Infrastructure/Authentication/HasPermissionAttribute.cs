@@ -39,9 +39,8 @@ public sealed class HasPermissionAttribute(Permissions[] mandatoryPermissions) :
                 await CreateUnauthorizedResponse(context);
                 return;
             }
-
-            //TODO: currently unnecessary
-            //controller.CurrentUser = user;
+            
+            controller.CurrentUser = user;
             await next();
         }
         catch

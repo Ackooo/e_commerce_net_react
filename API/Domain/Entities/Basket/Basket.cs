@@ -3,8 +3,9 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Shared.Constants;
 
-[Table(nameof(Basket), Schema = "Store")]
+[Table(nameof(Basket), Schema = DbConstants.DbSchemaNameStore)]
 public class Basket
 {
 

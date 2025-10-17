@@ -43,7 +43,7 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseSwaggerConfiguration();
 
-app.UseCorsConfiguration();
+app.UseCorsConfiguration(configuration);
 
 app.UseAuthentication();
 

@@ -2,8 +2,9 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Shared.Constants;
 
-[Table(nameof(Product), Schema = "Store")]
+[Table(nameof(Product), Schema = DbConstants.DbSchemaNameStore)]
 //TODO: add with client
 //[Index(nameof(Name), nameof(Brand), IsUnique = true, Name = $"UX_{nameof(Product)}_{nameof(Name)}_{nameof(Brand)}")]
 public class Product

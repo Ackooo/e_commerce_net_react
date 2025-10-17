@@ -7,7 +7,7 @@ public static class ProductExtensions
 {
     #region Queryable
 
-    public static IQueryable<Product> Sort(this IQueryable<Product> query, string orderBy)
+    public static IQueryable<Product> Sort(this IQueryable<Product> query, string? orderBy)
     {
         if(string.IsNullOrWhiteSpace(orderBy)) return query.OrderBy(p => p.Name);
 
@@ -21,11 +21,13 @@ public static class ProductExtensions
         return query;
     }
 
-    public static IQueryable<Product> Search(this IQueryable<Product> query, string searchTerm)
+    public static IQueryable<Product> Search(this IQueryable<Product> query, string? searchTerm)
     {
         if(string.IsNullOrEmpty(searchTerm)) return query;
+
         var searchTermLowerCase = searchTerm.Trim().ToLower();
-        return query.Where(p => p.Name.ToLower().Contains(searchTermLowerCase));
+        return query.Where(p => p.Name.Contains(
+            searchTermLowerCase, StringComparison.CurrentCultureIgnoreCase));
 
     }
 
