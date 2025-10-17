@@ -30,4 +30,7 @@
 /API/Test/bin
 /API/Test/obj
 
+/API/Benchmark/bin
+/API/Benchmark/obj
+
 /API/.editorconfig

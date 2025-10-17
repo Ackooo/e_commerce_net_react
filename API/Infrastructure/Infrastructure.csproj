@@ -29,6 +29,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.3" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.3" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.0.1" />
+    <PackageReference Include="NPOI" Version="2.7.5" />
     <PackageReference Include="Stripe.net" Version="47.4.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.1" />
   </ItemGroup>
