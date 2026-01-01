@@ -9,6 +9,11 @@ CloudinarySettings:
 dotnet ef migrations add InitialCreate --project ../api/infrastructure --startup-project ../api/api
 dotnet ef database update
 
+npm cache clean --force
+
+
+
+
 
 
 -logger to db x3 - log schema
@@ -33,7 +38,9 @@ chart za admin
 Expression build
 review proizovda sa zvezdicama
 feature flag
-
-
+index
+role i permisije + crud
+ep rename
+recaptcha
 
 prevod klijenta

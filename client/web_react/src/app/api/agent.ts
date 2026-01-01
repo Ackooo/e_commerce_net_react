@@ -5,8 +5,8 @@ import { PaginatedResponse } from "../models/pagination";
 import { store } from "../store/configureStore";
 
 const simulateDelay = () => new Promise(resolve => setTimeout(resolve, 500));
-//TODO: config api url
 axios.defaults.baseURL = process.env.E_COMMERCE_NET_REACT_API_URL;
+//axios.defaults.baseURL = "https://e-commerce-net-react-api-fec2enesbxa6geb3.germanywestcentral-01.azurewebsites.net/api/" ;
 axios.defaults.withCredentials = true;
 const responseBody = (response: AxiosResponse) => response.data;
 
